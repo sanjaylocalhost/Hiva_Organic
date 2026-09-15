@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const posts = [
+  { slug: 'cold-pressed-vs-refined', title: 'Cold-Pressed vs Refined Oil: What’s the Difference?', date: '2026-08-12', excerpt: 'Understand why cold-pressed oils retain more nutrients and flavour.' },
+  { slug: 'how-coconut-oil-is-made', title: 'How Coconut Oil Is Made', date: '2026-08-01', excerpt: 'A look at traditional extraction methods used by small-scale producers.' },
+  { slug: 'storing-natural-oils', title: 'How to Store Natural Oils', date: '2026-07-20', excerpt: 'Simple tips to keep your oils fresh for longer.' },
+];
+---
+<Layout title="Blog — HIVA">
+  <Header />
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h1 class="font-display text-4xl font-bold mb-10">Blog</h1>
+    <div class="space-y-8">
+      {posts.map(p => (
+        <article class="pb-8 border-b border-leaf-200 dark:border-forest-600">
+          <p class="text-xs text-forest-700/60 dark:text-leaf-200/60 mb-2">{p.date}</p>
+          <h2 class="font-display text-2xl font-bold mb-2 hover:text-leaf-600 dark:hover:text-leaf-300">
+            <a href={`/blog/${p.slug}`}>{p.title}</a>
+          </h2>
+          <p class="text-forest-700/80 dark:text-leaf-200/80">{p.excerpt}</p>
+        </article>
+      ))}
+    </div>
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+<Layout title="About HIVA">
+  <Header />
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <p class="text-sm font-semibold text-leaf-600 dark:text-leaf-300 uppercase tracking-widest mb-2">Our Story</p>
+    <h1 class="font-display text-4xl font-bold mb-6">Rooted in nature, made with care</h1>
+    <div class="prose prose-lg dark:prose-invert max-w-none">
+      <p>HIVA began with a simple belief — food should be honest. No shortcuts, no artificial processing, no hidden ingredients.</p>
+      <p>We work directly with farmers and traditional extraction units to bring you cold-pressed oils, raw honey and pantry staples as close to their natural form as possible.</p>
+      <h2>Our Promise</h2>
+      <ul>
+        <li>100% natural, no additives</li>
+        <li>Small-batch production</li>
+        <li>Transparent sourcing</li>
+        <li>Fair prices for farmers and customers</li>
+      </ul>
+    </div>
+  </main>
+  <Footer />
+</Layout>

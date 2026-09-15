@@ -1,0 +1,41 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { products } from '../../data/products';
+
+export function getStaticPaths() {
+  return products.map(p => ({ params: { slug: p.slug }, props: { product: p } }));
+}
+
+const { product } = Astro.props;
+---
+<Layout title={`${product.name} — HIVA`} description={product.description}>
+  <Header />
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid lg:grid-cols-2 gap-12">
+    <div class="aspect-square rounded-2xl bg-leaf-100 dark:bg-forest-600" />
+    <div>
+      <p class="text-xs text-leaf-600 dark:text-leaf-300 uppercase tracking-wide mb-2">{product.category}</p>
+      <h1 class="font-display text-4xl font-bold mb-4">{product.name}</h1>
+      <p class="text-forest-700/80 dark:text-leaf-200/80 mb-6">{product.description}</p>
+
+      <h3 class="font-semibold mb-3">Available Sizes</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
+        {product.variants.map(v => (
+          <label class="cursor-pointer p-3 rounded-lg border border-leaf-200 dark:border-forest-600 hover:border-leaf-500 transition text-center">
+            <input type="radio" name="variant" value={v.sku} class="sr-only peer" />
+            <div class="peer-checked:text-leaf-600 dark:peer-checked:text-leaf-300">
+              <p class="text-sm font-semibold">{v.size}</p>
+              <p class="text-xs">₹{v.price} <span class="line-through opacity-60">₹{v.mrp}</span></p>
+            </div>
+          </label>
+        ))}
+      </div>
+
+      <button class="w-full sm:w-auto px-8 py-3 rounded-full bg-leaf-600 hover:bg-leaf-700 text-white font-semibold transition">
+        Add to Cart
+      </button>
+    </div>
+  </main>
+  <Footer />
+</Layout>

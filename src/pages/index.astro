@@ -1,0 +1,67 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { products } from '../data/products';
+---
+<Layout title="HIVA — Pure Organic Products">
+  <Header />
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-br from-leaf-100 to-leaf-50 dark:from-forest-700 dark:to-forest-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+      <p class="text-sm font-semibold text-leaf-600 dark:text-leaf-300 uppercase tracking-widest mb-3">Pure • Natural • Honest</p>
+      <h1 class="font-display text-4xl sm:text-6xl font-bold mb-6 leading-tight">
+        Wholesome products<br />from nature to your home
+      </h1>
+      <p class="text-lg text-forest-700/80 dark:text-leaf-200/80 max-w-2xl mx-auto mb-8">
+        Cold-pressed oils, raw honey and organic pantry essentials — sourced with care, made without compromise.
+      </p>
+      <a href="/shop" class="inline-block px-8 py-3 rounded-full bg-leaf-600 hover:bg-leaf-700 text-white font-semibold transition">
+        Shop Now
+      </a>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="flex items-end justify-between mb-8">
+      <h2 class="font-display text-3xl font-bold">Best Sellers</h2>
+      <a href="/shop" class="text-sm font-semibold text-leaf-600 dark:text-leaf-300 hover:underline">View all →</a>
+    </div>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {products.map(p => (
+        <a href={`/product/${p.slug}`} class="group rounded-2xl bg-white dark:bg-forest-700 border border-leaf-200 dark:border-forest-600 overflow-hidden hover:shadow-lg transition">
+          <div class="aspect-square bg-leaf-100 dark:bg-forest-600 flex items-center justify-center text-leaf-400 text-sm">Image</div>
+          <div class="p-5">
+            <p class="text-xs text-leaf-600 dark:text-leaf-300 uppercase tracking-wide mb-1">{p.category}</p>
+            <h3 class="font-semibold text-lg mb-1 group-hover:text-leaf-600 dark:group-hover:text-leaf-300">{p.name}</h3>
+            <p class="text-sm text-forest-700/70 dark:text-leaf-200/70 line-clamp-2">{p.description}</p>
+            <p class="mt-3 font-semibold">From ₹{Math.min(...p.variants.map(v => v.price))}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Why HIVA -->
+  <section class="bg-leaf-100 dark:bg-forest-700 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="font-display text-3xl font-bold mb-12">Why Choose HIVA</h2>
+      <div class="grid gap-8 md:grid-cols-3">
+        {[
+          { t: 'Cold Pressed', d: 'Traditional extraction preserves natural nutrients and aroma.' },
+          { t: 'No Additives', d: 'Nothing artificial. No preservatives. Just honest food.' },
+          { t: 'Farm Sourced', d: 'Directly from trusted farmers across India.' },
+        ].map(f => (
+          <div class="p-6 rounded-2xl bg-white dark:bg-forest-600">
+            <h3 class="font-semibold text-lg mb-2">{f.t}</h3>
+            <p class="text-sm text-forest-700/70 dark:text-leaf-200/70">{f.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

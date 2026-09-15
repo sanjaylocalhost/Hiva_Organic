@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { products } from '../data/products';
+---
+<Layout title="Shop — HIVA">
+  <Header />
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h1 class="font-display text-4xl font-bold mb-2">Shop</h1>
+    <p class="text-forest-700/70 dark:text-leaf-200/70 mb-10">Pure, natural products for your everyday kitchen.</p>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {products.map(p => (
+        <a href={`/product/${p.slug}`} class="rounded-2xl bg-white dark:bg-forest-700 border border-leaf-200 dark:border-forest-600 overflow-hidden hover:shadow-lg transition">
+          <div class="aspect-square bg-leaf-100 dark:bg-forest-600" />
+          <div class="p-5">
+            <p class="text-xs text-leaf-600 dark:text-leaf-300 uppercase tracking-wide mb-1">{p.category}</p>
+            <h3 class="font-semibold text-lg">{p.name}</h3>
+            <p class="mt-2 font-semibold">From ₹{Math.min(...p.variants.map(v => v.price))}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </main>
+  <Footer />
+</Layout>
