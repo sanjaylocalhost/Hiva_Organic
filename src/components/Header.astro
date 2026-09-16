@@ -1,40 +1,84 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
+
 const links = [
-  { href: '/',       label: 'Home' },
-  { href: '/about',  label: 'About' },
-  { href: '/shop',   label: 'Shop' },
-  { href: '/blog',   label: 'Blog' },
-  { href: '/contact',label: 'Contact' },
+  { href: '/',       label: 'HOME' },
+  { href: '/about',  label: 'ABOUT US' },
+  { href: '/shop',   label: 'COLD PRESSED OILS', hasDropdown: true },
+  { href: '/blog',   label: 'BLOG' },
+  { href: '/gallery',label: 'GALLERY' },
+  { href: '/contact',label: 'CONTACT US' },
 ];
 const path = Astro.url.pathname;
 ---
-<header class="sticky top-0 z-50 bg-leaf-50/90 dark:bg-forest-800/90 backdrop-blur border-b border-leaf-200 dark:border-forest-700">
-  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+
+<header class="sticky top-0 z-50 bg-[#2d5a3f] text-white shadow-md border-b border-[#1f3f2b]">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    
+    <!-- LOGO SECTION -->
     <a href="/" class="flex items-center gap-2">
-      <span class="w-9 h-9 rounded-full bg-leaf-500 dark:bg-leaf-400 flex items-center justify-center text-white font-bold">H</span>
-      <span class="font-display text-xl font-bold tracking-tight">HIVA</span>
+      <!-- Replace '/logo.png' with the actual path to your logo file in the public folder -->
+      <img 
+        src="/images/logo.jpeg" 
+        alt="Raingrain Logo" 
+        class="h-12 w-auto object-contain" 
+      />
     </a>
 
-    <ul class="hidden md:flex items-center gap-8">
+    <!-- NAVIGATION LINKS -->
+    <ul class="hidden md:flex items-center gap-6 lg:gap-8 h-full">
       {links.map(l => (
-        <li>
+        <li class="h-full flex items-center">
           <a
             href={l.href}
             class:list={[
-              'text-sm font-medium transition hover:text-leaf-600 dark:hover:text-leaf-300',
-              path === l.href && 'text-leaf-600 dark:text-leaf-300'
+              'text-xs lg:text-sm font-semibold tracking-wide transition hover:text-gray-300 flex items-center gap-1',
+              path === l.href && 'text-gray-300'
             ]}
-          >{l.label}</a>
+          >
+            {l.label}
+            {l.hasDropdown && (
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            )}
+          </a>
         </li>
       ))}
     </ul>
 
-    <div class="flex items-center gap-3">
-      <ThemeToggle />
-      <a href="/shop" class="hidden sm:inline-block px-4 py-2 rounded-lg bg-leaf-600 hover:bg-leaf-700 text-white text-sm font-semibold transition">
-        Shop Now
+    <!-- RIGHT SIDE ACTIONS -->
+    <div class="flex items-center gap-4 lg:gap-6">
+      
+      <!-- Login / Register -->
+      <a href="/login" class="hidden sm:block text-xs lg:text-sm font-semibold hover:text-gray-300 transition">
+        LOGIN / REGISTER
       </a>
+
+      <!-- Wishlist Icon -->
+      <a href="/wishlist" class="relative hover:text-gray-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+        <span class="absolute -top-2 -right-2 bg-[#4caf50] text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">0</span>
+      </a>
+
+      <!-- Cart Icon and Price -->
+      <a href="/cart" class="flex items-center gap-2 hover:text-gray-300 transition">
+        <div class="relative">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="absolute -top-2 -right-2 bg-[#4caf50] text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">0</span>
+        </div>
+        <span class="text-sm font-semibold hidden sm:block">₹0.00</span>
+      </a>
+
+      <!-- Optional: Keep Theme Toggle if you still want it -->
+      <!-- <ThemeToggle /> -->
+      
     </div>
   </nav>
 </header>
