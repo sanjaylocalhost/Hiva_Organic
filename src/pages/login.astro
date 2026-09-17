@@ -1,0 +1,224 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Login / Register — HIVA">
+  <Header />
+
+  <main class="min-h-[80vh] flex items-center justify-center px-4 py-16 bg-leaf-50 dark:bg-forest-800">
+    <div class="w-full max-w-md bg-white dark:bg-forest-700 rounded-2xl shadow-lg p-8">
+
+      <!-- Role toggle -->
+      <div class="flex bg-leaf-100 dark:bg-forest-600 rounded-full p-1 mb-6">
+        <button type="button" data-role="customer"
+          class="role-tab flex-1 py-2 rounded-full text-sm font-semibold bg-white shadow transition">
+          Customer
+        </button>
+        <button type="button" data-role="admin"
+          class="role-tab flex-1 py-2 rounded-full text-sm font-semibold transition">
+          Admin
+        </button>
+      </div>
+
+      <!-- Mode toggle (Login / Register) -->
+      <div class="flex border-b border-leaf-200 dark:border-forest-600 mb-6">
+        <button type="button" data-mode="login"
+          class="mode-tab flex-1 py-3 text-sm font-semibold text-[#2d5a3f] border-b-2 border-[#2d5a3f] transition">
+          Login
+        </button>
+        <button type="button" data-mode="register" id="registerTab"
+          class="mode-tab flex-1 py-3 text-sm font-semibold text-gray-500 border-b-2 border-transparent transition">
+          Register
+        </button>
+      </div>
+
+      <!-- Heading -->
+      <h1 id="formTitle" class="font-display text-2xl font-bold text-center mb-2">Welcome Back</h1>
+      <p id="formSubtitle" class="text-center text-sm text-gray-500 mb-6">Login to your HIVA account</p>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" class="space-y-4">
+        <input type="hidden" id="loginRole" value="customer" />
+
+        <div>
+          <label class="block text-sm font-medium mb-1">Email</label>
+          <input type="email" id="loginEmail" required
+            class="w-full px-4 py-3 rounded-xl border border-leaf-200 dark:border-forest-600 bg-transparent outline-none focus:ring-2 focus:ring-[#2d5a3f]" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-1">Password</label>
+          <input type="password" id="loginPassword" required
+            class="w-full px-4 py-3 rounded-xl border border-leaf-200 dark:border-forest-600 bg-transparent outline-none focus:ring-2 focus:ring-[#2d5a3f]" />
+        </div>
+
+        <p id="loginError" class="text-red-500 text-sm hidden"></p>
+
+        <button type="submit"
+          class="w-full py-3 rounded-full bg-[#2d5a3f] hover:bg-[#1f3f2b] text-white font-semibold transition">
+          Login
+        </button>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="registerForm" class="space-y-4 hidden">
+        <div>
+          <label class="block text-sm font-medium mb-1">Full Name</label>
+          <input type="text" id="regName" required
+            class="w-full px-4 py-3 rounded-xl border border-leaf-200 dark:border-forest-600 bg-transparent outline-none focus:ring-2 focus:ring-[#2d5a3f]" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-1">Email</label>
+          <input type="email" id="regEmail" required
+            class="w-full px-4 py-3 rounded-xl border border-leaf-200 dark:border-forest-600 bg-transparent outline-none focus:ring-2 focus:ring-[#2d5a3f]" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-1">Password</label>
+          <input type="password" id="regPassword" required minlength="6"
+            class="w-full px-4 py-3 rounded-xl border border-leaf-200 dark:border-forest-600 bg-transparent outline-none focus:ring-2 focus:ring-[#2d5a3f]" />
+        </div>
+
+        <p id="registerError" class="text-red-500 text-sm hidden"></p>
+
+        <button type="submit"
+          class="w-full py-3 rounded-full bg-[#2d5a3f] hover:bg-[#1f3f2b] text-white font-semibold transition">
+          Create Account
+        </button>
+      </form>
+
+    </div>
+  </main>
+
+  <Footer />
+
+  <script>
+    // ---------- Elements ----------
+    const roleTabs = document.querySelectorAll<HTMLElement>('.role-tab');
+    const modeTabs = document.querySelectorAll<HTMLElement>('.mode-tab');
+    const registerTab = document.getElementById('registerTab') as HTMLButtonElement;
+
+    const loginForm = document.getElementById('loginForm') as HTMLFormElement;
+    const registerForm = document.getElementById('registerForm') as HTMLFormElement;
+
+    const loginRole = document.getElementById('loginRole') as HTMLInputElement;
+    const formTitle = document.getElementById('formTitle') as HTMLElement;
+    const formSubtitle = document.getElementById('formSubtitle') as HTMLElement;
+
+    let currentRole: 'customer' | 'admin' = 'customer';
+    let currentMode: 'login' | 'register' = 'login';
+
+    // ---------- Role toggle ----------
+    function applyRole() {
+      if (currentRole === 'admin') {
+        // Admin can only login
+        registerTab.classList.add('hidden');
+        switchMode('login');
+      } else {
+        registerTab.classList.remove('hidden');
+      }
+      loginRole.value = currentRole;
+      updateHeadings();
+    }
+
+    roleTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        roleTabs.forEach((t) => t.classList.remove('bg-white', 'shadow'));
+        tab.classList.add('bg-white', 'shadow');
+        currentRole = (tab.dataset.role as 'customer' | 'admin') || 'customer';
+        applyRole();
+      });
+    });
+
+    // ---------- Mode toggle (login / register) ----------
+    function switchMode(mode: 'login' | 'register') {
+      currentMode = mode;
+      modeTabs.forEach((t) => {
+        const active = t.dataset.mode === mode;
+        t.classList.toggle('text-[#2d5a3f]', active);
+        t.classList.toggle('border-[#2d5a3f]', active);
+        t.classList.toggle('text-gray-500', !active);
+        t.classList.toggle('border-transparent', !active);
+      });
+
+      loginForm.classList.toggle('hidden', mode !== 'login');
+      registerForm.classList.toggle('hidden', mode !== 'register');
+      updateHeadings();
+    }
+
+    modeTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        if (currentRole === 'admin' && tab.dataset.mode === 'register') return;
+        switchMode((tab.dataset.mode as 'login' | 'register') || 'login');
+      });
+    });
+
+    // ---------- Headings ----------
+    function updateHeadings() {
+      if (currentRole === 'admin') {
+        formTitle.textContent = 'Admin Access';
+        formSubtitle.textContent = 'Authorized personnel only';
+      } else if (currentMode === 'register') {
+        formTitle.textContent = 'Create Account';
+        formSubtitle.textContent = 'Join HIVA for pure organic products';
+      } else {
+        formTitle.textContent = 'Welcome Back';
+        formSubtitle.textContent = 'Login to your HIVA account';
+      }
+    }
+
+    // ---------- LOGIN submit ----------
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = (document.getElementById('loginEmail') as HTMLInputElement).value;
+      const password = (document.getElementById('loginPassword') as HTMLInputElement).value;
+      const errorMsg = document.getElementById('loginError') as HTMLElement;
+      errorMsg.classList.add('hidden');
+
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, role: currentRole }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        window.location.href = currentRole === 'admin' ? '/admin' : '/account';
+      } else {
+        errorMsg.textContent = data.message || 'Invalid credentials';
+        errorMsg.classList.remove('hidden');
+      }
+    });
+
+    // ---------- REGISTER submit ----------
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = (document.getElementById('regName') as HTMLInputElement).value;
+      const email = (document.getElementById('regEmail') as HTMLInputElement).value;
+      const password = (document.getElementById('regPassword') as HTMLInputElement).value;
+      const errorMsg = document.getElementById('registerError') as HTMLElement;
+      errorMsg.classList.add('hidden');
+
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        window.location.href = '/account';
+      } else {
+        errorMsg.textContent = data.message || 'Registration failed';
+        errorMsg.classList.remove('hidden');
+      }
+    });
+
+    // ---------- Init ----------
+    applyRole();
+    switchMode('login');
+  </script>
+</Layout>

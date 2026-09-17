@@ -1,0 +1,29 @@
+---
+const posts = [
+  { t: '5 Benefits of Cold-Pressed Coconut Oil', img: '/public/images/img10.jpeg' },
+  { t: "Why Raw Honey Crystallizes (And Why It's Good)", img: '/public/images/img4.jpeg' },
+  { t: "Cooking with Cold-Pressed Oils: A Beginner's Guide", img: '/public/images/img11.jpeg' },
+];
+---
+
+<section class="bg-leaf-50 dark:bg-forest-800 py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-end justify-between mb-10">
+      <h2 class="font-display text-3xl md:text-4xl font-bold">From Our Blog</h2>
+      <a href="/blog" class="text-sm font-semibold text-leaf-600 dark:text-leaf-300 hover:underline">View all →</a>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      {posts.map((b) => (
+        <a href="/blog" class="group bg-white dark:bg-forest-700 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition">
+          <div class="aspect-video overflow-hidden">
+            <img src={b.img} alt={b.t} class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+          </div>
+          <div class="p-5">
+            <p class="text-xs text-leaf-600 dark:text-leaf-300 uppercase tracking-wide mb-2">Wellness</p>
+            <h3 class="font-semibold text-lg group-hover:text-leaf-600 dark:group-hover:text-leaf-300">{b.t}</h3>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

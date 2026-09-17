@@ -1,0 +1,22 @@
+---
+const benefits = [
+  { i: '❤️', t: 'Heart Healthy' },
+  { i: '🧠', t: 'Boosts Immunity' },
+  { i: '✨', t: 'Glowing Skin' },
+  { i: '💪', t: 'Rich in Nutrients' },
+];
+---
+
+<section class="bg-leaf-100 dark:bg-forest-700 py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="font-display text-3xl md:text-4xl font-bold mb-12">Health Benefits</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      {benefits.map((b) => (
+        <div class="p-6 rounded-2xl bg-white dark:bg-forest-600 shadow-sm">
+          <div class="text-4xl mb-3">{b.i}</div>
+          <p class="font-semibold">{b.t}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

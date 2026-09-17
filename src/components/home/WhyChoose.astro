@@ -1,0 +1,19 @@
+---
+const reasons = [
+  { t: 'Cold Pressed', d: 'Traditional extraction preserves natural nutrients and aroma.' },
+  { t: 'No Additives', d: 'Nothing artificial. No preservatives. Just honest food.' },
+  { t: 'Farm Sourced', d: 'Directly from trusted farmers across India.' },
+];
+---
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+  <h2 class="font-display text-3xl md:text-4xl font-bold mb-12">Why Choose HIVA</h2>
+  <div class="grid gap-8 md:grid-cols-3">
+    {reasons.map((f) => (
+      <div class="p-6 rounded-2xl bg-white dark:bg-forest-600 shadow-sm">
+        <h3 class="font-semibold text-lg mb-2">{f.t}</h3>
+        <p class="text-sm text-forest-700/70 dark:text-leaf-200/70">{f.d}</p>
+      </div>
+    ))}
+  </div>
+</section>

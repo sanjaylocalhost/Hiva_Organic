@@ -1,0 +1,19 @@
+---
+import { testimonials } from '../../data/home';
+---
+
+<section class="bg-[#2d5a3f] text-white py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="font-display text-3xl md:text-4xl font-bold mb-12">What Our Customers Say</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      {testimonials.map((t) => (
+        <div class="bg-white/10 backdrop-blur p-6 rounded-2xl text-left">
+          <div class="text-yellow-400 mb-3">{'★'.repeat(t.rating)}</div>
+          <p class="mb-4 italic">"{t.text}"</p>
+          <p class="font-semibold">{t.name}</p>
+          <p class="text-sm opacity-80">{t.location}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

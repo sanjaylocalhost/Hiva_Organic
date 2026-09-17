@@ -1,0 +1,26 @@
+---
+const steps = [
+  { n: '01', t: 'Sourced', d: 'Handpicked from certified organic farms.' },
+  { n: '02', t: 'Cold Pressed', d: 'Wood-pressed below 40°C to retain nutrients.' },
+  { n: '03', t: 'Quality Tested', d: 'Lab-tested for purity, every single batch.' },
+  { n: '04', t: 'Delivered Fresh', d: 'Sealed & shipped within 48 hours.' },
+];
+---
+
+<section class="bg-leaf-50 dark:bg-forest-800 py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <p class="text-sm font-semibold text-leaf-600 dark:text-leaf-300 uppercase tracking-widest mb-2">How It's Made</p>
+      <h2 class="font-display text-3xl md:text-4xl font-bold">From Farm to Your Kitchen</h2>
+    </div>
+    <div class="grid md:grid-cols-4 gap-8">
+      {steps.map((s) => (
+        <div class="text-center">
+          <div class="w-16 h-16 mx-auto rounded-full bg-[#2d5a3f] text-white flex items-center justify-center font-bold text-xl mb-4">{s.n}</div>
+          <h3 class="font-semibold text-lg mb-2">{s.t}</h3>
+          <p class="text-sm text-forest-700/70 dark:text-leaf-200/70">{s.d}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

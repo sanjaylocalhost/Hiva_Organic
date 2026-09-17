@@ -1,0 +1,19 @@
+---
+const badges = [
+  { label: '100% Organic', icon: '<path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/>' },
+  { label: 'Free Shipping ₹599+', icon: '<path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>' },
+  { label: 'Secure Payments', icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>' },
+  { label: 'Easy Returns', icon: '<path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 4 3 12 11 12"/>' },
+];
+---
+
+<section class="bg-[#2d5a3f] text-white py-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    {badges.map((b) => (
+      <div class="flex flex-col items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" set:html={b.icon} />
+        <p class="text-sm font-semibold">{b.label}</p>
+      </div>
+    ))}
+  </div>
+</section>
