@@ -1,0 +1,124 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Cart — HIVA">
+  <Header />
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="font-display text-3xl sm:text-4xl font-bold mb-2 text-forest-800 dark:text-leaf-100">Your Cart</h1>
+    <p class="text-sm text-forest-700/70 dark:text-leaf-200/70 mb-8">Review items and proceed to checkout.</p>
+
+    <!-- EMPTY -->
+    <div id="cart-empty" class="hidden text-center py-20">
+      <div class="text-6xl mb-4">🛒</div>
+      <h2 class="text-xl font-semibold mb-2 text-forest-800 dark:text-leaf-100">Your cart is empty</h2>
+      <p class="text-sm text-forest-700/70 dark:text-leaf-200/70 mb-6">Add some cold pressed oils or honey to get started.</p>
+      <a href="/shop" class="inline-block px-6 py-3 rounded-full bg-leaf-600 text-white font-semibold hover:bg-leaf-700 transition">Continue Shopping</a>
+    </div>
+
+    <!-- CONTENT -->
+    <div id="cart-content" class="grid lg:grid-cols-[1fr_380px] gap-8">
+      <div>
+        <div id="cart-items" class="space-y-4"></div>
+        <a href="/shop" class="inline-block mt-6 text-sm font-semibold text-leaf-600 hover:text-leaf-700">← Continue Shopping</a>
+      </div>
+
+      <aside class="h-fit rounded-2xl border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-700 p-6 sticky top-32">
+        <h2 class="font-display text-xl font-bold mb-4 text-forest-800 dark:text-leaf-100">Order Summary</h2>
+        <div class="space-y-3 text-sm mb-6">
+          <div class="flex justify-between">
+            <span class="text-forest-700/80 dark:text-leaf-200/80">Subtotal</span>
+            <span id="summary-subtotal" class="font-semibold text-forest-800 dark:text-leaf-100">₹0.00</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-forest-700/80 dark:text-leaf-200/80">Shipping</span>
+            <span class="font-semibold text-leaf-600">FREE</span>
+          </div>
+          <div class="border-t border-leaf-200 dark:border-forest-600 pt-3 flex justify-between text-base">
+            <span class="font-bold text-forest-800 dark:text-leaf-100">Total</span>
+            <span id="summary-total" class="font-bold text-forest-800 dark:text-leaf-100">₹0.00</span>
+          </div>
+        </div>
+        <a
+  href="/checkout"
+  class="block text-center w-full px-6 py-3 rounded-full bg-leaf-600 hover:bg-leaf-700 text-white font-semibold transition"
+>
+  Proceed to Checkout →
+</a>
+        <p class="text-[10px] text-center text-forest-700/60 dark:text-leaf-200/60 mt-3">Secure checkout · 7-day returns</p>
+      </aside>
+    </div>
+  </main>
+
+  <Footer />
+
+  <script>
+    import { cart, cartTotal, removeFromCart, updateQuantity, type CartItem } from '../stores/cart';
+
+    const itemsEl = document.getElementById('cart-items')!;
+    const contentEl = document.getElementById('cart-content')!;
+    const emptyEl = document.getElementById('cart-empty')!;
+    const subtotalEl = document.getElementById('summary-subtotal')!;
+    const totalEl = document.getElementById('summary-total')!;
+
+    const money = (n: number) => `₹${n.toFixed(2)}`;
+
+    function renderItem(item: CartItem) {
+      return `
+        <div class="flex gap-4 rounded-2xl border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-700 p-4">
+          <div class="w-20 h-20 rounded-xl bg-leaf-50 dark:bg-forest-600 overflow-hidden shrink-0">
+            ${item.image ? `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" />` : ''}
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-[10px] uppercase tracking-wider text-leaf-600 dark:text-leaf-300">${item.size}</p>
+            <h3 class="font-semibold text-sm text-forest-800 dark:text-leaf-100 line-clamp-2 mb-1">${item.name}</h3>
+            <p class="text-sm font-bold text-forest-800 dark:text-leaf-100">${money(item.price)}</p>
+            <div class="flex items-center gap-3 mt-2">
+              <div class="flex items-center border border-leaf-200 dark:border-forest-600 rounded-full">
+                <button data-action="dec" data-sku="${item.sku}" class="w-7 h-7 flex items-center justify-center hover:bg-leaf-50 dark:hover:bg-forest-600">−</button>
+                <span class="w-8 text-center text-xs font-semibold">${item.quantity}</span>
+                <button data-action="inc" data-sku="${item.sku}" class="w-7 h-7 flex items-center justify-center hover:bg-leaf-50 dark:hover:bg-forest-600">+</button>
+              </div>
+              <button data-action="remove" data-sku="${item.sku}" class="text-xs text-red-500 hover:text-red-600 font-semibold">Remove</button>
+            </div>
+          </div>
+          <div class="text-sm font-bold text-forest-800 dark:text-leaf-100 self-start">${money(item.price * item.quantity)}</div>
+        </div>
+      `;
+    }
+
+    function render() {
+      const items = cart.get();
+      if (items.length === 0) {
+        itemsEl.innerHTML = '';
+        contentEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+      contentEl.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+      itemsEl.innerHTML = items.map(renderItem).join('');
+      const total = cartTotal(items);
+      subtotalEl.textContent = money(total);
+      totalEl.textContent = money(total);
+    }
+
+    itemsEl.addEventListener('click', (e) => {
+      const target = (e.target as HTMLElement).closest<HTMLElement>('[data-action]');
+      if (!target) return;
+      const sku = target.dataset.sku!;
+      const action = target.dataset.action!;
+      const item = cart.get().find(i => i.sku === sku);
+      if (!item) return;
+      if (action === 'inc') updateQuantity(sku, item.quantity + 1);
+      if (action === 'dec') updateQuantity(sku, item.quantity - 1);
+      if (action === 'remove') removeFromCart(sku);
+    });
+
+    render();
+    cart.subscribe(render);
+  </script>
+</Layout>

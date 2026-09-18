@@ -1,21 +1,49 @@
 ---
 import { products } from '../../data/products';
+
+// Show only 6 products → 2 rows on desktop (3 per row)
+// Mobile (1 col) → 6 rows | Tablet (2 col) → 3 rows | Desktop (3 col) → 2 rows
+const featured = products.slice(0, 6);
 ---
 
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
   <div class="flex items-end justify-between mb-8">
     <h2 class="font-display text-3xl font-bold">Best Sellers</h2>
-    <a href="/shop" class="text-sm font-semibold text-leaf-600 dark:text-leaf-300 hover:underline">View all →</a>
+    <a href="/shop" class="text-sm font-semibold text-leaf-600 dark:text-leaf-300 hover:underline">
+      View all →
+    </a>
   </div>
+
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    {products.map((p) => (
-      <a href={`/product/${p.slug}`} class="group rounded-2xl bg-white dark:bg-forest-700 border border-leaf-200 dark:border-forest-600 overflow-hidden hover:shadow-lg transition">
-        <div class="aspect-square bg-leaf-100 dark:bg-forest-600 flex items-center justify-center text-leaf-400 text-sm">Image</div>
+    {featured.map((p) => (
+      <a
+        href={`/product/${p.slug}`}
+        class="group rounded-2xl bg-white dark:bg-forest-700 border border-leaf-200 dark:border-forest-600 overflow-hidden hover:shadow-lg transition"
+      >
+        <!-- IMAGE -->
+        <div class="aspect-square bg-leaf-100 dark:bg-forest-600 overflow-hidden">
+          <img
+            src={p.image}
+            alt={p.name}
+            loading="lazy"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            onerror="this.onerror=null; this.src='/images/placeholder.jpg';"
+          />
+        </div>
+
         <div class="p-5">
-          <p class="text-xs text-leaf-600 dark:text-leaf-300 uppercase tracking-wide mb-1">{p.category}</p>
-          <h3 class="font-semibold text-lg mb-1 group-hover:text-leaf-600 dark:group-hover:text-leaf-300">{p.name}</h3>
-          <p class="text-sm text-forest-700/70 dark:text-leaf-200/70 line-clamp-2">{p.description}</p>
-          <p class="mt-3 font-semibold">From ₹{Math.min(...p.variants.map(v => v.price))}</p>
+          <p class="text-xs text-leaf-600 dark:text-leaf-300 uppercase tracking-wide mb-1">
+            {p.category}
+          </p>
+          <h3 class="font-semibold text-lg mb-1 group-hover:text-leaf-600 dark:group-hover:text-leaf-300">
+            {p.name}
+          </h3>
+          <p class="text-sm text-forest-700/70 dark:text-leaf-200/70 line-clamp-2">
+            {p.description}
+          </p>
+          <p class="mt-3 font-semibold">
+            From ₹{Math.min(...p.variants.map(v => v.price))}
+          </p>
         </div>
       </a>
     ))}

@@ -2,26 +2,242 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ProductCard from '../components/ProductCard.astro';
 import { products } from '../data/products';
----
-<Layout title="Shop — HIVA">
-  <Header />
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <h1 class="font-display text-4xl font-bold mb-2">Oils</h1>
-    <p class="text-forest-700/70 dark:text-leaf-200/70 mb-10">Pure, natural products for your everyday kitchen.</p>
 
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {products.map(p => (
-        <a href={`/product/${p.slug}`} class="rounded-2xl bg-white dark:bg-forest-700 border border-leaf-200 dark:border-forest-600 overflow-hidden hover:shadow-lg transition">
-          <div class="aspect-square bg-leaf-100 dark:bg-forest-600" />
-          <div class="p-5">
-            <p class="text-xs text-leaf-600 dark:text-leaf-300 uppercase tracking-wide mb-1">{p.category}</p>
-            <h3 class="font-semibold text-lg">{p.name}</h3>
-            <p class="mt-2 font-semibold">From ₹{Math.min(...p.variants.map(v => v.price))}</p>
-          </div>
-        </a>
+// Build unique categories for filter tabs
+const categories = ['all', ...new Set(products.map(p => p.category))];
+
+// Product does not currently declare badge, but existing product data may include it.
+type ProductWithMetadata = (typeof products)[number] & {
+  badge?: string;
+  rating?: number;
+  reviews?: number;
+};
+const getMetadata = (product: (typeof products)[number]) =>
+  product as ProductWithMetadata;
+const getBadge = (product: (typeof products)[number]) => getMetadata(product).badge;
+
+// Sort: featured/bestseller first, then rating
+const sorted = [...products].sort((a, b) => {
+  if (getBadge(a) && !getBadge(b)) return -1;
+  if (!getBadge(a) && getBadge(b)) return 1;
+  return (getMetadata(b).rating || 0) - (getMetadata(a).rating || 0);
+});
+
+const categoryLabels: Record<string, string> = {
+  all: 'All Products',
+  oil: 'Cold Pressed Oils',
+  'coconut-oil': 'Coconut Oil',
+  honey: 'Honey',
+  ghee: 'Ghee',
+  spices: 'Spices',
+};
+
+const categoryEmojis: Record<string, string> = {
+  all: '🛒',
+  oil: '🫒',
+  'coconut-oil': '🥥',
+  honey: '🍯',
+  ghee: '🧈',
+  spices: '🌶️',
+};
+---
+
+<Layout title="Shop — HIVA" description="Pure cold pressed oils, coconut oil, honey and more.">
+  <Header />
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- HERO STRIP -->
+    <div class="mb-10 rounded-2xl bg-gradient-to-r from-leaf-600 to-leaf-500 text-white p-6 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <p class="text-xs uppercase tracking-widest opacity-90 mb-2">Shop Collection</p>
+        <h1 class="font-display text-3xl sm:text-4xl font-bold mb-2">Pure. Natural. Cold Pressed.</h1>
+        <p class="text-sm opacity-90 max-w-md">
+          Oils, coconut oil, honey and everyday essentials — sourced and pressed with care.
+        </p>
+      </div>
+      <div class="flex items-center gap-2 bg-white/15 backdrop-blur px-4 py-2 rounded-full text-xs font-semibold">
+        <span class="text-[#ffd966]">🔥</span>
+        FLAT 50% OFF · CODE <span class="bg-[#ffd966] text-[#1f3f2b] px-2 py-0.5 rounded">HIVA50</span>
+      </div>
+    </div>
+
+    <!-- CATEGORY TABS + SORT -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      <!-- Tabs -->
+      <div class="flex flex-wrap gap-2">
+        {categories.map(cat => (
+          <a
+            href={cat === 'all' ? '/shop' : `/shop?category=${cat}`}
+            class:list={[
+              'px-4 py-2 rounded-full text-xs font-semibold border transition whitespace-nowrap',
+              'border-leaf-200 dark:border-forest-600 text-forest-800 dark:text-leaf-100 hover:bg-leaf-600 hover:text-white hover:border-leaf-600',
+            ]}
+          >
+            {categoryEmojis[cat] || '•'} {categoryLabels[cat] || cat}
+          </a>
+        ))}
+      </div>
+
+      <!-- Sort -->
+      <div class="flex items-center gap-2 text-xs">
+        <label class="text-forest-700/70 dark:text-leaf-200/70">Sort:</label>
+        <select class="bg-white dark:bg-forest-700 border border-leaf-200 dark:border-forest-600 rounded-full px-3 py-1.5 text-xs font-semibold focus:outline-none focus:border-leaf-500">
+          <option>Featured</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+          <option>Newest</option>
+          <option>Best Rating</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- PRODUCT GRID -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 mb-16">
+      {sorted.map(p => (
+        <ProductCard
+          slug={p.slug}
+          name={p.name}
+          category={categoryLabels[p.category] || p.category}
+          price={p.variants?.[0]?.price || 0}
+          mrp={p.variants?.[0]?.mrp}
+          image={p.image}
+          badge={getBadge(p)}
+          rating={getMetadata(p).rating}
+          reviews={getMetadata(p).reviews}
+        />
       ))}
     </div>
+
+    <!-- FEATURED: COLD PRESSED OILS STRIP -->
+    <section class="mb-16">
+      <div class="flex items-end justify-between mb-6">
+        <div>
+          <h2 class="font-display text-2xl font-bold text-forest-800 dark:text-leaf-100">
+            🫒 Cold Pressed Oils
+          </h2>
+          <p class="text-xs text-forest-700/60 dark:text-leaf-200/60 mt-1">
+            Wood-pressed, chemical-free, unrefined.
+          </p>
+        </div>
+        <a href="/shop?category=oil" class="text-xs font-semibold text-leaf-600 hover:text-leaf-700">
+          View All →
+        </a>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+        {products
+          .filter(p => p.category === 'oil')
+          .slice(0, 4)
+          .map(p => (
+            <ProductCard
+              slug={p.slug}
+              name={p.name}
+              category="Cold Pressed Oil"
+              price={p.variants?.[0]?.price || 0}
+              mrp={p.variants?.[0]?.mrp}
+              image={p.image}
+              badge={getBadge(p)}
+              rating={getMetadata(p).rating}
+              reviews={getMetadata(p).reviews}
+            />
+          ))}
+      </div>
+    </section>
+
+    <!-- FEATURED: COCONUT OIL STRIP -->
+    <section class="mb-16">
+      <div class="flex items-end justify-between mb-6">
+        <div>
+          <h2 class="font-display text-2xl font-bold text-forest-800 dark:text-leaf-100">
+            🥥 Coconut Oil
+          </h2>
+          <p class="text-xs text-forest-700/60 dark:text-leaf-200/60 mt-1">
+            Virgin, cold-pressed, pure coconut goodness.
+          </p>
+        </div>
+        <a href="/shop?category=coconut-oil" class="text-xs font-semibold text-leaf-600 hover:text-leaf-700">
+          View All →
+        </a>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+        {products
+          .filter(p => p.category === 'coconut-oil')
+          .slice(0, 4)
+          .map(p => (
+            <ProductCard
+              slug={p.slug}
+              name={p.name}
+              category="Coconut Oil"
+              price={p.variants?.[0]?.price || 0}
+              mrp={p.variants?.[0]?.mrp}
+              image={p.image}
+              badge={getBadge(p)}
+              rating={getMetadata(p).rating}
+              reviews={getMetadata(p).reviews}
+            />
+          ))}
+      </div>
+    </section>
+
+    <!-- FEATURED: HONEY STRIP -->
+    <section class="mb-16">
+      <div class="flex items-end justify-between mb-6">
+        <div>
+          <h2 class="font-display text-2xl font-bold text-forest-800 dark:text-leaf-100">
+            🍯 Pure Honey
+          </h2>
+          <p class="text-xs text-forest-700/60 dark:text-leaf-200/60 mt-1">
+            Raw, unfiltered, straight from the hive.
+          </p>
+        </div>
+        <a href="/shop?category=honey" class="text-xs font-semibold text-leaf-600 hover:text-leaf-700">
+          View All →
+        </a>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+        {products
+          .filter(p => p.category === 'honey')
+          .slice(0, 4)
+          .map(p => (
+            <ProductCard
+              slug={p.slug}
+              name={p.name}
+              category="Honey"
+              price={p.variants?.[0]?.price || 0}
+              mrp={p.variants?.[0]?.mrp}
+              image={p.image}
+              badge={getBadge(p)}
+              rating={getMetadata(p).rating}
+              reviews={getMetadata(p).reviews}
+            />
+          ))}
+      </div>
+    </section>
+
+    <!-- COMBO / BUNDLE PROMO -->
+    <section class="mb-16">
+      <div class="rounded-2xl bg-[#1f3f2b] text-white p-6 sm:p-10 grid lg:grid-cols-2 gap-8 items-center">
+        <div>
+          <p class="text-xs uppercase tracking-widest text-[#ffd966] mb-2">Combo Offer</p>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold mb-3">
+            Buy 2 Get 1 FREE
+          </h2>
+          <p class="text-sm text-[#e8f5e9]/80 mb-6 max-w-md">
+            Mix & match any oils, coconut oil or honey. Auto-applied at checkout.
+          </p>
+          <a href="/shop" class="inline-block px-8 py-3 rounded-full bg-[#ffd966] text-[#1f3f2b] font-bold text-sm hover:bg-white transition">
+            Shop Combos →
+          </a>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+          {products.slice(0, 3).map(p => (
+            <div class="aspect-square rounded-xl bg-white/10 backdrop-blur" />
+          ))}
+        </div>
+      </div>
+    </section>
   </main>
+
   <Footer />
 </Layout>

@@ -1,0 +1,89 @@
+---
+interface Props {
+  slug: string;
+  name: string;
+  category: string;
+  price: number;
+  mrp?: number;
+  image?: string;
+  badge?: string;
+  rating?: number;
+  reviews?: number;
+}
+
+const {
+  slug, name, category, price, mrp,
+  image = '/images/placeholder.jpg',
+  badge, rating = 4.5, reviews = 0,
+} = Astro.props;
+
+const discount = mrp && mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0;
+---
+
+<a
+  href={`/product/${slug}`}
+  class="group relative flex flex-col w-full rounded-2xl border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-700 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+>
+  {badge && (
+    <span class="absolute top-3 left-3 z-10 bg-[#ffd966] text-[#1f3f2b] text-[10px] font-bold px-2 py-1 rounded-full uppercase">
+      {badge}
+    </span>
+  )}
+
+  {discount > 0 && (
+    <span class="absolute top-3 right-3 z-10 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">
+      -{discount}%
+    </span>
+  )}
+
+  <div class="aspect-square w-full bg-leaf-50 dark:bg-forest-600 overflow-hidden">
+    <img
+      src={image}
+      alt={name}
+      loading="lazy"
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+    />
+  </div>
+
+  <div class="p-4 flex flex-col flex-1 w-full">
+    <p class="text-[10px] uppercase tracking-wider text-leaf-600 dark:text-leaf-300 mb-1">
+      {category}
+    </p>
+    <h3 class="font-semibold text-sm text-forest-800 dark:text-leaf-100 line-clamp-2 mb-2">
+      {name}
+    </h3>
+
+    <div class="flex items-center gap-1 mb-3">
+      <div class="flex text-[#ffd966]">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+            fill={i < Math.round(rating) ? 'currentColor' : 'none'}
+            stroke="currentColor" stroke-width="1.5">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        ))}
+      </div>
+      <span class="text-[10px] text-forest-700/60 dark:text-leaf-200/60">({reviews})</span>
+    </div>
+
+    <div class="mt-auto flex items-end justify-between gap-2">
+      <div class="flex items-baseline gap-1.5">
+        <span class="text-base font-bold text-forest-800 dark:text-leaf-100">₹{price}</span>
+        {mrp && mrp > price && (
+          <span class="text-xs line-through text-forest-700/50 dark:text-leaf-200/50">₹{mrp}</span>
+        )}
+      </div>
+      <button
+        type="button"
+        aria-label="Add to cart"
+        class="flex items-center justify-center w-9 h-9 rounded-full bg-leaf-600 hover:bg-leaf-700 text-white transition shrink-0"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</a>

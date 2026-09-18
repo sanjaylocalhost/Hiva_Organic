@@ -1,0 +1,38 @@
+---
+// WhatsApp Floating Button Component
+const phoneNumber = "919880874454"; // 👈 Replace with your WhatsApp number (country code + number, NO + or spaces)
+const defaultMessage = "Hi! I'm interested in your cold pressed oils.";
+const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(defaultMessage)}`;
+---
+
+<a
+  href={whatsappUrl}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Chat on WhatsApp"
+  class="whatsapp-float group fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110"
+>
+  <!-- WhatsApp SVG Icon -->
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 32 32"
+    width="30"
+    height="30"
+    fill="currentColor"
+    class="shrink-0"
+  >
+    <path d="M16.003 3C8.832 3 3 8.83 3 16c0 2.29.6 4.44 1.65 6.3L3 29l6.9-1.6A12.94 12.94 0 0 0 16.003 29C23.17 29 29 23.17 29 16S23.17 3 16.003 3zm0 23.6c-1.94 0-3.75-.53-5.3-1.45l-.38-.22-4.1.95.98-4-.25-.4A10.55 10.55 0 0 1 5.4 16c0-5.85 4.76-10.6 10.6-10.6 5.85 0 10.6 4.75 10.6 10.6s-4.75 10.6-10.6 10.6z"/>
+    <path d="M22.3 18.7c-.35-.18-2.06-1.02-2.38-1.13-.32-.12-.55-.18-.78.18-.23.35-.9 1.13-1.1 1.36-.2.23-.4.26-.75.09-.35-.18-1.48-.55-2.82-1.74-1.04-.93-1.74-2.08-1.94-2.43-.2-.35-.02-.54.15-.71.16-.16.35-.4.53-.6.18-.2.23-.35.35-.58.12-.23.06-.44-.03-.62-.09-.18-.78-1.88-1.07-2.57-.28-.68-.57-.6-.78-.6h-.66c-.23 0-.6.09-.9.44-.32.35-1.2 1.16-1.2 2.83 0 1.67 1.22 3.28 1.4 3.5.18.23 2.4 3.66 5.82 5.13.81.35 1.45.56 1.94.72.82.26 1.56.22 2.15.13.66-.1 2.03-.83 2.32-1.63.29-.8.29-1.48.2-1.63-.09-.15-.32-.23-.67-.4z"/>
+  </svg>
+
+  <!-- Optional: Pulse animation ring -->
+  <span class="absolute inline-flex h-full w-full rounded-full bg-[#25D366] opacity-75 animate-ping"></span>
+</a>
+
+<style>
+  /* Hide the pulse ring on hover for cleanliness */
+  .whatsapp-float:hover .animate-ping {
+    animation: none;
+    opacity: 0;
+  }
+</style>

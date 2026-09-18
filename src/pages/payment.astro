@@ -1,0 +1,292 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Payment — HIVA">
+  <Header />
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="font-display text-3xl sm:text-4xl font-bold mb-2 text-forest-800 dark:text-leaf-100">Payment</h1>
+    <p class="text-sm text-forest-700/70 dark:text-leaf-200/70 mb-8">Choose how you'd like to pay.</p>
+
+    <!-- EMPTY -->
+    <div id="payment-empty" class="hidden text-center py-20">
+      <div class="text-6xl mb-4">💳</div>
+      <h2 class="text-xl font-semibold mb-2 text-forest-800 dark:text-leaf-100">No order found</h2>
+      <p class="text-sm text-forest-700/70 dark:text-leaf-200/70 mb-6">Please start from the cart.</p>
+      <a href="/shop" class="inline-block px-6 py-3 rounded-full bg-leaf-600 text-white font-semibold hover:bg-leaf-700 transition">Go to Shop</a>
+    </div>
+
+    <!-- CONTENT -->
+    <div id="payment-content" class="hidden">
+      <!-- Order total banner -->
+      <div class="rounded-2xl bg-[#1f3f2b] text-white p-6 mb-8 flex items-center justify-between">
+        <div>
+          <p class="text-xs opacity-80">Amount to pay</p>
+          <p id="pay-amount" class="font-display text-3xl font-bold">₹0.00</p>
+        </div>
+        <div class="text-right text-xs opacity-80">
+          <p id="pay-order-name">—</p>
+          <p id="pay-order-phone">—</p>
+        </div>
+      </div>
+
+      <!-- UPI QR + ID -->
+      <section class="rounded-2xl border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-700 p-6 mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-display text-lg font-bold text-forest-800 dark:text-leaf-100">UPI / QR Payment</h2>
+          <span class="text-xs font-semibold text-leaf-600 bg-leaf-50 dark:bg-forest-800 px-2 py-1 rounded-full">
+            Recommended
+          </span>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-6 items-center">
+          <!-- QR Code -->
+          <div class="flex flex-col items-center">
+            <div class="w-56 h-56 rounded-2xl border-4 border-leaf-600 p-3 bg-white flex items-center justify-center">
+              <img
+                src="/images/upi-qr.png"
+                alt="Scan to pay"
+                class="w-full h-full object-contain"
+              />
+            </div>
+            <p class="text-xs text-center mt-3 text-forest-700/70 dark:text-leaf-200/70">
+              Scan with any UPI app — GPay, PhonePe, Paytm, BHIM
+            </p>
+          </div>
+
+          <!-- UPI ID Entry -->
+          <div>
+            <p class="text-sm font-semibold mb-2 text-forest-800 dark:text-leaf-100">Or pay using UPI ID</p>
+            <div class="space-y-3">
+              <div>
+                <label class="block text-xs font-semibold mb-1 text-forest-700 dark:text-leaf-200">Your UPI ID</label>
+                <input
+                  id="upi-input"
+                  type="text"
+                  placeholder="yourname@bank"
+                  class="w-full rounded-lg border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-800 px-3 py-2 text-sm focus:outline-none focus:border-leaf-500"
+                />
+              </div>
+              <a
+                id="upi-pay-link"
+                href="#"
+                class="block text-center w-full px-6 py-3 rounded-full bg-leaf-600 hover:bg-leaf-700 text-white font-semibold transition"
+              >
+                Pay ₹0.00 via UPI App →
+              </a>
+              <p class="text-[10px] text-forest-700/60 dark:text-leaf-200/60 text-center">
+                Opens your default UPI app
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Business UPI ID display -->
+        <div class="mt-6 p-4 rounded-xl bg-leaf-50 dark:bg-forest-800 border border-leaf-200 dark:border-forest-600">
+          <p class="text-xs text-forest-700/70 dark:text-leaf-200/70 mb-1">Our UPI ID</p>
+          <div class="flex items-center gap-2">
+            <code id="business-upi" class="font-mono text-sm font-bold text-forest-800 dark:text-leaf-100">hivaorganics@upi</code>
+            <button
+              type="button"
+              id="copy-upi"
+              class="text-xs font-semibold text-leaf-600 hover:text-leaf-700 px-2 py-1 rounded border border-leaf-300 hover:bg-white transition"
+            >
+              Copy
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Alternate options -->
+      <section class="grid sm:grid-cols-2 gap-4 mb-8">
+        <button
+          id="cod-btn"
+          type="button"
+          class="rounded-2xl border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-700 p-5 text-left hover:border-leaf-500 transition"
+        >
+          <div class="text-2xl mb-2">💵</div>
+          <p class="font-semibold text-forest-800 dark:text-leaf-100">Cash on Delivery</p>
+          <p class="text-xs text-forest-700/70 dark:text-leaf-200/70 mt-1">Pay when the order arrives</p>
+        </button>
+
+        <button
+          id="whatsapp-btn"
+          type="button"
+          class="rounded-2xl border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-700 p-5 text-left hover:border-leaf-500 transition"
+        >
+          <div class="text-2xl mb-2">💬</div>
+          <p class="font-semibold text-forest-800 dark:text-leaf-100">Order via WhatsApp</p>
+          <p class="text-xs text-forest-700/70 dark:text-leaf-200/70 mt-1">We'll confirm & send payment link</p>
+        </button>
+      </section>
+
+      <!-- Confirmation message -->
+      <div id="payment-confirm" class="hidden rounded-2xl bg-leaf-50 dark:bg-forest-700 border border-leaf-200 dark:border-forest-600 p-6 text-center">
+        <div class="text-4xl mb-2">✅</div>
+        <h2 class="font-display text-xl font-bold text-forest-800 dark:text-leaf-100 mb-2">Order placed!</h2>
+        <p class="text-sm text-forest-700/70 dark:text-leaf-200/70 mb-4">
+          We've received your order. You'll hear from us shortly.
+        </p>
+        <a href="/shop" class="inline-block px-6 py-3 rounded-full bg-leaf-600 text-white font-semibold hover:bg-leaf-700 transition">Continue Shopping</a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+
+  <script>
+    import { cart, cartTotal, clearCart } from '../stores/cart';
+
+    // CONFIG — change these
+    const BUSINESS_UPI = 'hivaorganics@upi';           // 👈 your UPI ID
+    const BUSINESS_WHATSAPP = '919999999999';          // 👈 your WhatsApp number
+    const BUSINESS_NAME = 'HIVA Organics';
+
+    const contentEl = document.getElementById('payment-content')!;
+    const emptyEl = document.getElementById('payment-empty')!;
+    const amountEl = document.getElementById('pay-amount')!;
+    const orderNameEl = document.getElementById('pay-order-name')!;
+    const orderPhoneEl = document.getElementById('pay-order-phone')!;
+    const upiInput = document.getElementById('upi-input') as HTMLInputElement;
+    const upiPayLink = document.getElementById('upi-pay-link') as HTMLAnchorElement;
+    const businessUpiEl = document.getElementById('business-upi')!;
+    const copyBtn = document.getElementById('copy-upi')!;
+    const codBtn = document.getElementById('cod-btn')!;
+    const whatsappBtn = document.getElementById('whatsapp-btn')!;
+    const confirmEl = document.getElementById('payment-confirm')!;
+
+    const money = (n: number) => `₹${n.toFixed(2)}`;
+
+    type Order = {
+      name: string; phone: string; email: string;
+      address: string; city: string; state: string; pincode: string;
+      notes: string; payment: string;
+      items: { name: string; size: string; quantity: number; price: number }[];
+      total: number;
+    };
+
+    let order: Order | null = null;
+    try { order = JSON.parse(sessionStorage.getItem('hiva-order') || 'null'); } catch {}
+
+    function buildUpiDeepLink(amount: number, note: string, txnRef: string) {
+      const params = new URLSearchParams({
+        pa: BUSINESS_UPI,
+        pn: BUSINESS_NAME,
+        am: amount.toFixed(2),
+        cu: 'INR',
+        tn: note,
+        tr: txnRef,
+      });
+      return `upi://pay?${params.toString()}`;
+    }
+
+    function refreshUpiLink() {
+      if (!order) return;
+      const note = `${BUSINESS_NAME} order for ${order.name}`;
+      const ref = `HIVA${Date.now()}`;
+      upiPayLink.href = buildUpiDeepLink(order.total, note, ref);
+      upiPayLink.textContent = `Pay ${money(order.total)} via UPI App →`;
+    }
+
+    function init() {
+      const items = cart.get();
+      if (!order || items.length === 0) {
+        contentEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+
+      contentEl.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+
+      amountEl.textContent = money(order.total);
+      orderNameEl.textContent = order.name;
+      orderPhoneEl.textContent = `+91 ${order.phone}`;
+      businessUpiEl.textContent = BUSINESS_UPI;
+
+      refreshUpiLink();
+    }
+
+    // UPI input → build link with the user's UPI ID (some apps accept `pa` override)
+    upiInput?.addEventListener('input', () => {
+      if (!order) return;
+      const userUpi = upiInput.value.trim();
+      if (userUpi && userUpi.includes('@')) {
+        const note = `${BUSINESS_NAME} order for ${order.name}`;
+        const ref = `HIVA${Date.now()}`;
+        const params = new URLSearchParams({
+          pa: BUSINESS_UPI,          // payee is still us
+          pn: BUSINESS_NAME,
+          am: order.total.toFixed(2),
+          cu: 'INR',
+          tn: note,
+          tr: ref,
+        });
+        upiPayLink.href = `upi://pay?${params.toString()}`;
+      } else {
+        refreshUpiLink();
+      }
+    });
+
+    // Copy business UPI
+    copyBtn?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(BUSINESS_UPI);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => (copyBtn.textContent = 'Copy'), 1500);
+      } catch {}
+    });
+
+    function formatOrderMessage() {
+      if (!order) return '';
+      const lines = [
+        `🛒 *New Order — ${BUSINESS_NAME}*`,
+        ``,
+        `👤 ${order.name}`,
+        `📞 ${order.phone}`,
+        `📧 ${order.email}`,
+        ``,
+        `📍 ${order.address}, ${order.city}, ${order.state} — ${order.pincode}`,
+        ``,
+        `*Items:*`,
+        ...order.items.map(i => `• ${i.name} (${i.size}) × ${i.quantity} — ₹${(i.price * i.quantity).toFixed(2)}`),
+        ``,
+        `*Total:* ₹${order.total.toFixed(2)}`,
+        `*Payment:* ${order.payment.toUpperCase()}`,
+        order.notes ? `\n📝 Notes: ${order.notes}` : '',
+      ];
+      return lines.join('\n');
+    }
+
+    function finalize(paymentMethod: string) {
+      if (!order) return;
+      order.payment = paymentMethod;
+      sessionStorage.setItem('hiva-order', JSON.stringify(order));
+
+      // Send to WhatsApp
+      const waUrl = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(formatOrderMessage())}`;
+      window.open(waUrl, '_blank');
+
+      clearCart();
+      contentEl.classList.add('hidden');
+      confirmEl.classList.remove('hidden');
+    }
+
+    // Cash on Delivery
+    codBtn?.addEventListener('click', () => finalize('cod'));
+
+    // WhatsApp order
+    whatsappBtn?.addEventListener('click', () => finalize('whatsapp'));
+
+    // UPI Pay click → open UPI app, then mark as placed
+    upiPayLink?.addEventListener('click', (e) => {
+      // Let the deep link open naturally; then after a delay, finalize
+      setTimeout(() => finalize('upi'), 800);
+    });
+
+    init();
+  </script>
+</Layout>

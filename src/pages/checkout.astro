@@ -1,0 +1,192 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Checkout — HIVA">
+  <Header />
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="font-display text-3xl sm:text-4xl font-bold mb-2 text-forest-800 dark:text-leaf-100">Checkout</h1>
+    <p class="text-sm text-forest-700/70 dark:text-leaf-200/70 mb-8">Enter your details to complete your order.</p>
+
+    <!-- EMPTY -->
+    <div id="checkout-empty" class="hidden text-center py-20">
+      <div class="text-6xl mb-4">🛒</div>
+      <h2 class="text-xl font-semibold mb-2 text-forest-800 dark:text-leaf-100">Your cart is empty</h2>
+      <p class="text-sm text-forest-700/70 dark:text-leaf-200/70 mb-6">Add products before checking out.</p>
+      <a href="/shop" class="inline-block px-6 py-3 rounded-full bg-leaf-600 text-white font-semibold hover:bg-leaf-700 transition">Go to Shop</a>
+    </div>
+
+    <!-- CONTENT -->
+    <form id="checkout-form" class="grid lg:grid-cols-[1fr_380px] gap-8">
+      <!-- LEFT: Customer Info -->
+      <div class="space-y-6">
+        <section class="rounded-2xl border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-700 p-6">
+          <h2 class="font-display text-lg font-bold mb-4 text-forest-800 dark:text-leaf-100">Contact Details</h2>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold mb-1 text-forest-700 dark:text-leaf-200">Full Name *</label>
+              <input required name="name" type="text" class="w-full rounded-lg border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-800 px-3 py-2 text-sm focus:outline-none focus:border-leaf-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold mb-1 text-forest-700 dark:text-leaf-200">Phone *</label>
+              <input required name="phone" type="tel" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile" class="w-full rounded-lg border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-800 px-3 py-2 text-sm focus:outline-none focus:border-leaf-500" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold mb-1 text-forest-700 dark:text-leaf-200">Email *</label>
+              <input required name="email" type="email" class="w-full rounded-lg border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-800 px-3 py-2 text-sm focus:outline-none focus:border-leaf-500" />
+            </div>
+          </div>
+        </section>
+
+        <section class="rounded-2xl border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-700 p-6">
+          <h2 class="font-display text-lg font-bold mb-4 text-forest-800 dark:text-leaf-100">Shipping Address</h2>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold mb-1 text-forest-700 dark:text-leaf-200">Address Line *</label>
+              <input required name="address" type="text" class="w-full rounded-lg border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-800 px-3 py-2 text-sm focus:outline-none focus:border-leaf-500" />
+            </div>
+            <div class="grid sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-semibold mb-1 text-forest-700 dark:text-leaf-200">City *</label>
+                <input required name="city" type="text" class="w-full rounded-lg border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-800 px-3 py-2 text-sm focus:outline-none focus:border-leaf-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold mb-1 text-forest-700 dark:text-leaf-200">State *</label>
+                <input required name="state" type="text" class="w-full rounded-lg border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-800 px-3 py-2 text-sm focus:outline-none focus:border-leaf-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold mb-1 text-forest-700 dark:text-leaf-200">PIN *</label>
+                <input required name="pincode" type="text" pattern="[0-9]{6}" maxlength="6" class="w-full rounded-lg border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-800 px-3 py-2 text-sm focus:outline-none focus:border-leaf-500" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold mb-1 text-forest-700 dark:text-leaf-200">Order Notes (optional)</label>
+              <textarea name="notes" rows="2" class="w-full rounded-lg border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-800 px-3 py-2 text-sm focus:outline-none focus:border-leaf-500"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- Payment Method Choice -->
+        <section class="rounded-2xl border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-700 p-6">
+          <h2 class="font-display text-lg font-bold mb-4 text-forest-800 dark:text-leaf-100">Payment Method</h2>
+          <div class="space-y-3">
+            <label class="flex items-start gap-3 p-3 rounded-lg border border-leaf-200 dark:border-forest-600 hover:border-leaf-500 cursor-pointer transition">
+              <input type="radio" name="payment" value="upi" checked class="mt-1 accent-leaf-600" />
+              <div>
+                <p class="text-sm font-semibold text-forest-800 dark:text-leaf-100">UPI / QR Payment</p>
+                <p class="text-xs text-forest-700/70 dark:text-leaf-200/70">Scan QR or enter UPI ID — instant confirmation</p>
+              </div>
+            </label>
+            <label class="flex items-start gap-3 p-3 rounded-lg border border-leaf-200 dark:border-forest-600 hover:border-leaf-500 cursor-pointer transition">
+              <input type="radio" name="payment" value="cod" class="mt-1 accent-leaf-600" />
+              <div>
+                <p class="text-sm font-semibold text-forest-800 dark:text-leaf-100">Cash on Delivery</p>
+                <p class="text-xs text-forest-700/70 dark:text-leaf-200/70">Pay when your order arrives</p>
+              </div>
+            </label>
+            <label class="flex items-start gap-3 p-3 rounded-lg border border-leaf-200 dark:border-forest-600 hover:border-leaf-500 cursor-pointer transition">
+              <input type="radio" name="payment" value="whatsapp" class="mt-1 accent-leaf-600" />
+              <div>
+                <p class="text-sm font-semibold text-forest-800 dark:text-leaf-100">Order via WhatsApp</p>
+                <p class="text-xs text-forest-700/70 dark:text-leaf-200/70">We'll confirm and share payment options</p>
+              </div>
+            </label>
+          </div>
+        </section>
+      </div>
+
+      <!-- RIGHT: Order Summary -->
+      <aside class="h-fit rounded-2xl border border-leaf-200 dark:border-forest-600 bg-white dark:bg-forest-700 p-6 sticky top-32">
+        <h2 class="font-display text-xl font-bold mb-4 text-forest-800 dark:text-leaf-100">Order Summary</h2>
+        <div id="checkout-items" class="space-y-3 mb-4 max-h-72 overflow-y-auto"></div>
+        <div class="space-y-3 text-sm border-t border-leaf-200 dark:border-forest-600 pt-4">
+          <div class="flex justify-between">
+            <span class="text-forest-700/80 dark:text-leaf-200/80">Subtotal</span>
+            <span id="checkout-subtotal" class="font-semibold text-forest-800 dark:text-leaf-100">₹0.00</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-forest-700/80 dark:text-leaf-200/80">Shipping</span>
+            <span class="font-semibold text-leaf-600">FREE</span>
+          </div>
+          <div class="border-t border-leaf-200 dark:border-forest-600 pt-3 flex justify-between text-base">
+            <span class="font-bold text-forest-800 dark:text-leaf-100">Total</span>
+            <span id="checkout-total" class="font-bold text-forest-800 dark:text-leaf-100">₹0.00</span>
+          </div>
+        </div>
+        <button type="submit" class="mt-6 w-full px-6 py-3 rounded-full bg-leaf-600 hover:bg-leaf-700 text-white font-semibold transition">
+          Place Order →
+        </button>
+        <p class="text-[10px] text-center text-forest-700/60 dark:text-leaf-200/60 mt-3">Secure checkout · 7-day returns</p>
+      </aside>
+    </form>
+  </main>
+
+  <Footer />
+
+  <script>
+    import { cart, cartTotal, type CartItem } from '../stores/cart';
+
+    const formEl = document.getElementById('checkout-form') as HTMLFormElement;
+    const contentEl = formEl;
+    const emptyEl = document.getElementById('checkout-empty')!;
+    const itemsEl = document.getElementById('checkout-items')!;
+    const subtotalEl = document.getElementById('checkout-subtotal')!;
+    const totalEl = document.getElementById('checkout-total')!;
+
+    const money = (n: number) => `₹${n.toFixed(2)}`;
+
+    function renderSummary() {
+      const items = cart.get();
+      if (items.length === 0) {
+        contentEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+      contentEl.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+
+      itemsEl.innerHTML = items.map(item => `
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-lg bg-leaf-50 dark:bg-forest-600 overflow-hidden shrink-0">
+            ${item.image ? `<img src="${item.image}" alt="" class="w-full h-full object-cover" />` : ''}
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs font-semibold text-forest-800 dark:text-leaf-100 line-clamp-1">${item.name}</p>
+            <p class="text-[10px] text-forest-700/60 dark:text-leaf-200/60">${item.size} × ${item.quantity}</p>
+          </div>
+          <p class="text-xs font-bold text-forest-800 dark:text-leaf-100">${money(item.price * item.quantity)}</p>
+        </div>
+      `).join('');
+
+      const total = cartTotal(items);
+      subtotalEl.textContent = money(total);
+      totalEl.textContent = money(total);
+    }
+
+    formEl.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(formEl);
+      const order = {
+        name: data.get('name'),
+        phone: data.get('phone'),
+        email: data.get('email'),
+        address: data.get('address'),
+        city: data.get('city'),
+        state: data.get('state'),
+        pincode: data.get('pincode'),
+        notes: data.get('notes'),
+        payment: data.get('payment'),
+        items: cart.get(),
+        total: cartTotal(cart.get()),
+      };
+      sessionStorage.setItem('hiva-order', JSON.stringify(order));
+      window.location.href = '/payment';
+    });
+
+    renderSummary();
+    cart.subscribe(renderSummary);
+  </script>
+</Layout>

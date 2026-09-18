@@ -9,33 +9,328 @@ export function getStaticPaths() {
 }
 
 const { product } = Astro.props;
+
+const youMayLike = products
+  .filter(p => p.slug !== product.slug && p.category === product.category)
+  .slice(0, 4);
+
+const related = products
+  .filter(p =>
+    p.slug !== product.slug &&
+    !youMayLike.find(y => y.slug === p.slug) &&
+    ['oil', 'coconut-oil', 'honey'].includes(p.category?.toLowerCase?.() || '')
+  )
+  .slice(0, 4);
 ---
+
 <Layout title={`${product.name} — HIVA`} description={product.description}>
   <Header />
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid lg:grid-cols-2 gap-12">
-    <div class="aspect-square rounded-2xl bg-leaf-100 dark:bg-forest-600" />
-    <div>
-      <p class="text-xs text-leaf-600 dark:text-leaf-300 uppercase tracking-wide mb-2">{product.category}</p>
-      <h1 class="font-display text-4xl font-bold mb-4">{product.name}</h1>
-      <p class="text-forest-700/80 dark:text-leaf-200/80 mb-6">{product.description}</p>
 
-      <h3 class="font-semibold mb-3">Available Sizes</h3>
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
-        {product.variants.map(v => (
-          <label class="cursor-pointer p-3 rounded-lg border border-leaf-200 dark:border-forest-600 hover:border-leaf-500 transition text-center">
-            <input type="radio" name="variant" value={v.sku} class="sr-only peer" />
-            <div class="peer-checked:text-leaf-600 dark:peer-checked:text-leaf-300">
-              <p class="text-sm font-semibold">{v.size}</p>
-              <p class="text-xs">₹{v.price} <span class="line-through opacity-60">₹{v.mrp}</span></p>
-            </div>
-          </label>
-        ))}
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Breadcrumb -->
+    <nav class="text-xs text-forest-700/60 dark:text-leaf-200/60 mb-6 flex items-center gap-2">
+      <a href="/" class="hover:text-leaf-600">Home</a>
+      <span>/</span>
+      <a href="/shop" class="hover:text-leaf-600">Shop</a>
+      <span>/</span>
+      <span class="text-forest-800 dark:text-leaf-100 font-medium">{product.name}</span>
+    </nav>
+
+    <!-- PRODUCT DETAIL GRID -->
+    <div class="grid lg:grid-cols-2 gap-12 mb-20">
+      <!-- LEFT: Gallery -->
+      <div>
+        <div class="aspect-square rounded-2xl bg-leaf-100 dark:bg-forest-600 overflow-hidden mb-4">
+          <img src={product.image || '/images/placeholder.jpg'} alt={product.name} class="w-full h-full object-cover" />
+        </div>
+        <div class="grid grid-cols-4 gap-3">
+          {[1, 2, 3, 4].map((n) => (
+            <button class="aspect-square rounded-lg border border-leaf-200 dark:border-forest-600 overflow-hidden hover:border-leaf-500 transition">
+              <div class="w-full h-full bg-leaf-50 dark:bg-forest-700" />
+            </button>
+          ))}
+        </div>
       </div>
 
-      <button class="w-full sm:w-auto px-8 py-3 rounded-full bg-leaf-600 hover:bg-leaf-700 text-white font-semibold transition">
-        Add to Cart
-      </button>
+      <!-- RIGHT: Details -->
+      <div>
+        <p class="text-xs text-leaf-600 dark:text-leaf-300 uppercase tracking-wide mb-2">{product.category}</p>
+        <h1 class="font-display text-4xl font-bold mb-4 text-forest-800 dark:text-leaf-100">{product.name}</h1>
+
+        <div class="flex items-center gap-2 mb-4">
+          <div class="flex text-[#ffd966]">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                fill={i < 4 ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="1.5">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            ))}
+          </div>
+          <span class="text-xs text-forest-700/70 dark:text-leaf-200/70">4.7 (128 reviews)</span>
+        </div>
+
+        <p class="text-forest-700/80 dark:text-leaf-200/80 mb-6">{product.description}</p>
+
+        <!-- Sizes -->
+        <h3 class="font-semibold mb-3 text-forest-800 dark:text-leaf-100">Available Sizes</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8" id="variant-picker">
+          {product.variants.map((v, idx) => (
+            <label class="cursor-pointer p-3 rounded-lg border border-leaf-200 dark:border-forest-600 hover:border-leaf-500 transition text-center">
+              <input
+                type="radio"
+                name="variant"
+                value={v.sku}
+                data-size={v.size}
+                data-price={v.price}
+                data-mrp={v.mrp}
+                class="sr-only peer"
+                checked={idx === 0}
+              />
+              <div class="peer-checked:text-leaf-600 dark:peer-checked:text-leaf-300">
+                <p class="text-sm font-semibold">{v.size}</p>
+                <p class="text-xs">₹{v.price} <span class="line-through opacity-60">₹{v.mrp}</span></p>
+              </div>
+            </label>
+          ))}
+        </div>
+
+        <!-- Quantity + Add to cart + Wishlist -->
+        <div class="flex flex-wrap items-center gap-3 mb-6">
+          <!-- Quantity stepper -->
+          <div class="flex items-center border border-leaf-200 dark:border-forest-600 rounded-full overflow-hidden">
+            <button type="button" id="qty-dec" class="w-10 h-10 flex items-center justify-center hover:bg-leaf-50 dark:hover:bg-forest-600 text-forest-800 dark:text-leaf-100">−</button>
+            <input id="qty-input" type="text" value="1" class="w-12 text-center bg-transparent text-sm font-semibold text-forest-800 dark:text-leaf-100 focus:outline-none" />
+            <button type="button" id="qty-inc" class="w-10 h-10 flex items-center justify-center hover:bg-leaf-50 dark:hover:bg-forest-600 text-forest-800 dark:text-leaf-100">+</button>
+          </div>
+
+          <!-- Add to Cart -->
+          <button
+            id="add-to-cart-btn"
+            data-slug={product.slug}
+            data-name={product.name}
+            data-image={product.image || ''}
+            data-category={product.category}
+            class="flex-1 sm:flex-none px-8 py-3 rounded-full bg-leaf-600 hover:bg-leaf-700 text-white font-semibold transition"
+          >
+            Add to Cart
+          </button>
+
+          <!-- Wishlist -->
+          <button
+            id="wishlist-btn"
+            type="button"
+            data-slug={product.slug}
+            data-name={product.name}
+            data-image={product.image || ''}
+            data-category={product.category}
+            aria-label="Add to wishlist"
+            class="flex items-center justify-center w-12 h-12 rounded-full border border-leaf-600 text-leaf-600 hover:bg-leaf-600 hover:text-white transition shrink-0"
+          >
+            <svg id="wishlist-heart" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
+
+          <!-- Buy Now -->
+          <button
+            id="buy-now-btn"
+            data-slug={product.slug}
+            data-name={product.name}
+            data-image={product.image || ''}
+            data-category={product.category}
+            class="px-8 py-3 rounded-full border border-leaf-600 text-leaf-600 hover:bg-leaf-600 hover:text-white font-semibold transition"
+          >
+            Buy Now
+          </button>
+        </div>
+
+        <!-- Trust badges -->
+        <div class="grid grid-cols-3 gap-3 text-center text-[10px] text-forest-700/70 dark:text-leaf-200/70">
+          <div class="p-3 rounded-lg bg-leaf-50 dark:bg-forest-700">
+            <p class="font-bold text-forest-800 dark:text-leaf-100">100%</p>
+            <p>Natural</p>
+          </div>
+          <div class="p-3 rounded-lg bg-leaf-50 dark:bg-forest-700">
+            <p class="font-bold text-forest-800 dark:text-leaf-100">Free</p>
+            <p>Shipping</p>
+          </div>
+          <div class="p-3 rounded-lg bg-leaf-50 dark:bg-forest-700">
+            <p class="font-bold text-forest-800 dark:text-leaf-100">7 Day</p>
+            <p>Returns</p>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- YOU MAY ALSO LIKE -->
+    {youMayLike.length > 0 && (
+      <section class="mb-20">
+        <div class="flex items-end justify-between mb-6">
+          <div>
+            <h2 class="font-display text-2xl font-bold text-forest-800 dark:text-leaf-100">You May Also Like</h2>
+            <p class="text-xs text-forest-700/60 dark:text-leaf-200/60 mt-1">More from {product.category}</p>
+          </div>
+          <a href="/shop" class="text-xs font-semibold text-leaf-600 hover:text-leaf-700">View All →</a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+          {youMayLike.map(p => (
+            <a href={`/product/${p.slug}`} class="block rounded-xl overflow-hidden border border-leaf-200 dark:border-forest-600 hover:border-leaf-500 transition">
+              <div class="aspect-square bg-leaf-100 dark:bg-forest-600 overflow-hidden">
+                <img src={p.image || '/images/placeholder.jpg'} alt={p.name} class="w-full h-full object-cover" />
+              </div>
+              <div class="p-3">
+                <p class="text-xs text-leaf-600 dark:text-leaf-300 uppercase">{p.category}</p>
+                <h3 class="font-semibold text-forest-800 dark:text-leaf-100">{p.name}</h3>
+                <p class="text-sm">₹{p.variants?.[0]?.price || 0} <span class="line-through opacity-60">₹{p.variants?.[0]?.mrp}</span></p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- RELATED PRODUCTS -->
+    <section>
+      <div class="flex items-end justify-between mb-6">
+        <div>
+          <h2 class="font-display text-2xl font-bold text-forest-800 dark:text-leaf-100">Related Products</h2>
+          <p class="text-xs text-forest-700/60 dark:text-leaf-200/60 mt-1">Cold pressed oils & pure honey</p>
+        </div>
+        <a href="/shop" class="text-xs font-semibold text-leaf-600 hover:text-leaf-700">View All →</a>
+      </div>
+
+      {related.length > 0 ? (
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+          {related.map(p => (
+            <a href={`/product/${p.slug}`} class="block rounded-xl overflow-hidden border border-leaf-200 dark:border-forest-600 hover:border-leaf-500 transition">
+              <div class="aspect-square bg-leaf-100 dark:bg-forest-600 overflow-hidden">
+                <img src={p.image || '/images/placeholder.jpg'} alt={p.name} class="w-full h-full object-cover" />
+              </div>
+              <div class="p-3">
+                <p class="text-xs text-leaf-600 dark:text-leaf-300 uppercase">{p.category}</p>
+                <h3 class="font-semibold text-forest-800 dark:text-leaf-100">{p.name}</h3>
+                <p class="text-sm">₹{p.variants?.[0]?.price || 0} <span class="line-through opacity-60">₹{p.variants?.[0]?.mrp}</span></p>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="text-sm text-forest-700/60 dark:text-leaf-200/60">No related products yet.</p>
+      )}
+    </section>
   </main>
+
   <Footer />
+
+  <!-- TOAST -->
+  <div id="cart-toast" class="fixed bottom-24 right-6 z-[200] bg-[#1f3f2b] text-white text-sm font-semibold px-4 py-3 rounded-xl shadow-xl opacity-0 translate-y-3 transition-all duration-300 pointer-events-none">
+    ✅ Added to cart
+  </div>
+
+  <script>
+    import { addToCart } from '../../stores/cart';
+    import { toggleWishlist, isInWishlist } from '../../stores/wishlist';
+
+    const picker = document.getElementById('variant-picker') as HTMLElement | null;
+    const qtyInput = document.getElementById('qty-input') as HTMLInputElement | null;
+    const qtyInc = document.getElementById('qty-inc');
+    const qtyDec = document.getElementById('qty-dec');
+    const addBtn = document.getElementById('add-to-cart-btn') as HTMLButtonElement | null;
+    const buyBtn = document.getElementById('buy-now-btn') as HTMLButtonElement | null;
+    const wishlistBtn = document.getElementById('wishlist-btn') as HTMLButtonElement | null;
+    const wishlistHeart = document.getElementById('wishlist-heart') as SVGElement | null;
+    const toast = document.getElementById('cart-toast');
+
+    function getQty() {
+      return Math.max(1, Number(qtyInput?.value || 1));
+    }
+    function setQty(n: number) {
+      if (!qtyInput) return;
+      qtyInput.value = String(Math.max(1, n));
+    }
+
+    qtyInc?.addEventListener('click', () => setQty(getQty() + 1));
+    qtyDec?.addEventListener('click', () => setQty(getQty() - 1));
+
+    function showToast(msg: string) {
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.remove('opacity-0', 'translate-y-3');
+      setTimeout(() => toast.classList.add('opacity-0', 'translate-y-3'), 2000);
+    }
+
+    function getCheckedVariant() {
+      return picker?.querySelector<HTMLInputElement>('input[name="variant"]:checked') || null;
+    }
+
+    function collectCartItem(btn: HTMLButtonElement) {
+      const checked = getCheckedVariant();
+      if (!checked) return null;
+      return {
+        sku: checked.value,
+        slug: btn.dataset.slug || '',
+        name: btn.dataset.name || '',
+        size: checked.dataset.size || '',
+        price: Number(checked.dataset.price || 0),
+        mrp: checked.dataset.mrp ? Number(checked.dataset.mrp) : undefined,
+        image: btn.dataset.image || '',
+      };
+    }
+
+    // ---------- Wishlist ----------
+    function refreshWishlistIcon() {
+      if (!wishlistBtn || !wishlistHeart) return;
+      const checked = getCheckedVariant();
+      if (!checked) return;
+      const inList = isInWishlist(checked.value);
+
+      wishlistHeart.setAttribute('fill', inList ? 'currentColor' : 'none');
+
+      if (inList) {
+        wishlistBtn.classList.add('bg-leaf-600', 'text-white');
+        wishlistBtn.classList.remove('text-leaf-600');
+      } else {
+        wishlistBtn.classList.remove('bg-leaf-600', 'text-white');
+        wishlistBtn.classList.add('text-leaf-600');
+      }
+    }
+
+    // Update heart when size changes
+    picker?.addEventListener('change', refreshWishlistIcon);
+
+    wishlistBtn?.addEventListener('click', () => {
+      const checked = getCheckedVariant();
+      if (!checked) return;
+      const added = toggleWishlist({
+        sku: checked.value,
+        slug: wishlistBtn.dataset.slug || '',
+        name: wishlistBtn.dataset.name || '',
+        price: Number(checked.dataset.price || 0),
+        mrp: checked.dataset.mrp ? Number(checked.dataset.mrp) : undefined,
+        image: wishlistBtn.dataset.image || '',
+        category: wishlistBtn.dataset.category || '',
+      });
+      refreshWishlistIcon();
+      showToast(added ? '💚 Added to wishlist' : '💔 Removed from wishlist');
+    });
+
+    // Init heart on page load
+    refreshWishlistIcon();
+
+    // ---------- Cart ----------
+    addBtn?.addEventListener('click', () => {
+      const item = collectCartItem(addBtn);
+      if (!item) return;
+      addToCart(item, getQty());
+      showToast('✅ Added to cart');
+    });
+
+    buyBtn?.addEventListener('click', () => {
+      const item = collectCartItem(buyBtn);
+      if (!item) return;
+      addToCart(item, getQty());
+      window.location.href = '/cart';
+    });
+  </script>
 </Layout>
