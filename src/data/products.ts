@@ -26,7 +26,7 @@ export const products: Product[] = [
     name: 'Cold Pressed Coconut Oil',
     category: 'coconut-oil',
     description: 'Pure, cold-pressed coconut oil — unrefined, natural aroma, no additives. Perfect for cooking, skin, and hair.',
-    image: '/images/h1.jpeg',
+    image: '/images/img13.jpeg',
     badge: 'BESTSELLER',
     rating: 4.8,
     reviews: 214,
@@ -72,10 +72,10 @@ export const products: Product[] = [
 
   {
     slug: 'cold-pressed-mustard-oil',
-    name: 'Cold Pressed Mustard Oil',
+    name: 'Sesame Oil',
     category: 'oil',
     description: 'Kachi ghani mustard oil — pungent, pure, and perfect for pickles, curries, and traditional recipes.',
-    image: '/images/img7.jpeg',
+    image: '/images/img12.jpeg',
     rating: 4.5,
     reviews: 98,
     variants: [

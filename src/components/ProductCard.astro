@@ -36,12 +36,13 @@ const discount = mrp && mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 
     </span>
   )}
 
-  <div class="aspect-square w-full bg-leaf-50 dark:bg-forest-600 overflow-hidden">
+  <!-- IMAGE: fills card edge-to-edge, no background gap -->
+  <div class="relative aspect-[3/4] w-full overflow-hidden">
     <img
       src={image}
       alt={name}
       loading="lazy"
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+      class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
     />
   </div>
 
@@ -73,10 +74,16 @@ const discount = mrp && mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 
           <span class="text-xs line-through text-forest-700/50 dark:text-leaf-200/50">₹{mrp}</span>
         )}
       </div>
+
       <button
         type="button"
         aria-label="Add to cart"
-        class="flex items-center justify-center w-9 h-9 rounded-full bg-leaf-600 hover:bg-leaf-700 text-white transition shrink-0"
+        data-slug={slug}
+        data-name={name}
+        data-price={price}
+        data-image={image}
+        data-category={category}
+        class="add-to-cart-btn flex items-center justify-center w-9 h-9 rounded-full bg-leaf-600 hover:bg-leaf-700 text-white transition shrink-0 relative z-20"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="9" cy="21" r="1"></circle>
@@ -87,3 +94,19 @@ const discount = mrp && mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 
     </div>
   </div>
 </a>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.add-to-cart-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Optional: hook into your cart store here
+      // import { addToCart } from '../stores/cart';
+      // addToCart({ sku: btn.dataset.slug, name: btn.dataset.name, ... }, 1);
+
+      btn.classList.add('scale-90');
+      setTimeout(() => btn.classList.remove('scale-90'), 150);
+    });
+  });
+</script>
