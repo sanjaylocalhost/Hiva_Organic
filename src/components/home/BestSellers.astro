@@ -2,7 +2,6 @@
 import { products } from '../../data/products';
 
 // Show only 6 products → 2 rows on desktop (3 per row)
-// Mobile (1 col) → 6 rows | Tablet (2 col) → 3 rows | Desktop (3 col) → 2 rows
 const featured = products.slice(0, 6);
 ---
 
@@ -20,13 +19,13 @@ const featured = products.slice(0, 6);
         href={`/product/${p.slug}`}
         class="group rounded-2xl bg-white dark:bg-forest-700 border border-leaf-200 dark:border-forest-600 overflow-hidden hover:shadow-lg transition"
       >
-        <!-- IMAGE -->
-        <div class="aspect-square bg-leaf-100 dark:bg-forest-600 overflow-hidden">
+        <!-- IMAGE — full bottle visible, no crop -->
+        <div class="aspect-[4/5] bg-[#f5efe3] dark:bg-forest-600 overflow-hidden flex items-center justify-center">
           <img
             src={p.image}
             alt={p.name}
             loading="lazy"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
             onerror="this.onerror=null; this.src='/images/placeholder.jpg';"
           />
         </div>
