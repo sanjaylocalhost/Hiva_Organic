@@ -1,7 +1,7 @@
 // src/data/home.ts
 export const categories = [
-  { name: 'Cold Pressed Oils', img: '/images/img4.jpeg', href: '/shop' },
-  { name: 'Raw Honey', img: '/images/img7.jpeg', href: '/shop' },
+  { name: 'Sun Flower Oil', img: '/images/imag27.jpeg', href: '/shop' },
+  { name: 'Raw Honey', img: '/images/imag25.jpeg', href: '/shop' },
   { name: 'Sesame Oil', img: '/images/img12.jpeg', href: '/shop' },
   { name: 'Cocount Oil', img: '/images/img13.jpeg', href: '/shop' },
 ];

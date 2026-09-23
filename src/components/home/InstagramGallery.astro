@@ -1,9 +1,9 @@
 ---
 const images = [
-  '/images/img4.jpeg',
-  '/images/h1.jpeg',
-  '/images/img5.jpeg',
-  '/images/img7.jpeg',
+  '/images/img12.jpeg',
+  '/images/imag22.jpeg',
+  '/images/imag20.jpeg',
+  '/images/imag25.jpeg',
 ];
 ---
 
@@ -12,10 +12,15 @@ const images = [
     <p class="text-sm font-semibold text-leaf-600 dark:text-leaf-300 uppercase tracking-widest mb-2">Follow Us</p>
     <h2 class="font-display text-3xl md:text-4xl font-bold">@hiva.organic</h2>
   </div>
+
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     {images.map((img) => (
-      <a href="#" class="aspect-square rounded-xl overflow-hidden group">
-        <img src={img} alt="Instagram" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+      <a href="#" class="aspect-[3/4] rounded-xl overflow-hidden group block">
+        <img
+          src={img}
+          alt="Instagram"
+          class="w-full h-full object-cover object-center group-hover:scale-110 transition duration-500"
+        />
       </a>
     ))}
   </div>

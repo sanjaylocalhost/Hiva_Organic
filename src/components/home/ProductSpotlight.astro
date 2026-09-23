@@ -1,16 +1,58 @@
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid md:grid-cols-2 gap-12 items-center">
-  <div class="rounded-3xl overflow-hidden shadow-xl">
-    <img src="/images/img4.jpeg" alt="Coconut Oil" class="w-full h-full object-cover" />
+  <!-- LEFT: Full bottle image, no crop -->
+  <div class="rounded-3xl overflow-hidden shadow-xl bg-[#f5efe3] aspect-[4/5] max-h-[520px] w-full mx-auto flex items-center justify-center">
+    <img src="/images/img13.jpeg" alt="Coconut Oil" class="w-full h-full object-contain" />
   </div>
+
+  <!-- RIGHT: Enriched product content -->
   <div>
     <p class="text-sm font-semibold text-leaf-600 dark:text-leaf-300 uppercase tracking-widest mb-2">Product Spotlight</p>
-    <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">Pure Cold-Pressed Coconut Oil</h2>
-    <p class="text-forest-700/80 dark:text-leaf-200/80 mb-6">Extracted from sun-dried coconuts using traditional wood-press methods. Rich in MCTs, perfect for cooking, skin, and hair.</p>
-    <ul class="space-y-3 mb-8">
-      <li class="flex items-center gap-3"><span class="text-[#2d5a3f]">✓</span> 100% Pure & Unrefined</li>
-      <li class="flex items-center gap-3"><span class="text-[#2d5a3f]">✓</span> No Chemicals or Preservatives</li>
-      <li class="flex items-center gap-3"><span class="text-[#2d5a3f]">✓</span> Glass Bottle Packaging</li>
+    <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">Pure Cold-Pressed Coconut Oil</h2>
+
+    <!-- Star rating + reviews -->
+    <div class="flex items-center gap-3 mb-4">
+      <div class="flex text-[#e0a63c] text-lg leading-none">★★★★★</div>
+      <span class="text-sm text-forest-700/70 dark:text-leaf-200/70">4.9 · 2,340 reviews</span>
+    </div>
+
+    <!-- Short description -->
+    <p class="text-forest-700/80 dark:text-leaf-200/80 mb-5 leading-relaxed">
+      Extracted from sun-dried coconuts using traditional wood-press methods. Rich in MCTs, perfect for cooking, skin, and hair — 100% natural, unrefined, and untouched by heat.
+    </p>
+
+    <!-- Price block -->
+    <div class="flex items-baseline gap-3 mb-6">
+      <span class="text-3xl font-bold text-[#2d5a3f]">₹499</span>
+      <span class="text-base text-forest-700/50 dark:text-leaf-200/50 line-through">₹699</span>
+      <span class="text-xs font-bold uppercase tracking-wider bg-[#f5efe3] text-[#2d5a3f] px-2.5 py-1 rounded-full">Save 28%</span>
+    </div>
+
+    <!-- Feature list -->
+    <ul class="space-y-3 mb-6">
+      <li class="flex items-start gap-3"><span class="text-[#2d5a3f] font-bold">✓</span> 100% Pure &amp; Unrefined</li>
+      <li class="flex items-start gap-3"><span class="text-[#2d5a3f] font-bold">✓</span> No Chemicals or Preservatives</li>
+      <li class="flex items-start gap-3"><span class="text-[#2d5a3f] font-bold">✓</span> Glass Bottle Packaging</li>
+      <li class="flex items-start gap-3"><span class="text-[#2d5a3f] font-bold">✓</span> Cold-Pressed · Wood-Pressed Method</li>
+      <li class="flex items-start gap-3"><span class="text-[#2d5a3f] font-bold">✓</span> Rich in MCTs — Great for Cooking, Skin &amp; Hair</li>
+      <li class="flex items-start gap-3"><span class="text-[#2d5a3f] font-bold">✓</span> 1 L · Net Quantity</li>
     </ul>
-    <a href="/shop" class="inline-block px-8 py-3 rounded-full bg-[#2d5a3f] hover:bg-[#1f3f2b] text-white font-semibold transition">Buy Now — ₹499</a>
+
+    <!-- Trust badges -->
+    <div class="flex flex-wrap gap-2 mb-8">
+      <span class="text-xs font-semibold bg-leaf-50 dark:bg-forest-700 border border-leaf-200 dark:border-forest-600 text-leaf-700 dark:text-leaf-200 px-3 py-1.5 rounded-full">🚚 Free Shipping</span>
+      <span class="text-xs font-semibold bg-leaf-50 dark:bg-forest-700 border border-leaf-200 dark:border-forest-600 text-leaf-700 dark:text-leaf-200 px-3 py-1.5 rounded-full">🔄 Easy Returns</span>
+      <span class="text-xs font-semibold bg-leaf-50 dark:bg-forest-700 border border-leaf-200 dark:border-forest-600 text-leaf-700 dark:text-leaf-200 px-3 py-1.5 rounded-full">🛡️ Quality Assured</span>
+    </div>
+
+    <!-- CTAs -->
+    <div class="flex flex-wrap gap-3">
+      <a href="/shop" class="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[#2d5a3f] hover:bg-[#1f3f2b] text-white font-semibold transition">
+        Buy Now — ₹499
+        <span class="text-lg leading-none">→</span>
+      </a>
+      <a href="/shop" class="inline-flex items-center gap-2 px-8 py-3 rounded-full border-2 border-[#2d5a3f] text-[#2d5a3f] hover:bg-[#2d5a3f] hover:text-white font-semibold transition">
+        Learn More
+      </a>
+    </div>
   </div>
 </section>

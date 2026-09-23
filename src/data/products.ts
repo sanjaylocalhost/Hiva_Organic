@@ -44,7 +44,7 @@ export const products: Product[] = [
     name: 'Cold Pressed Groundnut Oil',
     category: 'oil',
     description: 'Wood-pressed groundnut oil with rich aroma and authentic taste. Ideal for everyday cooking and frying.',
-    image: '/images/h1.jpeg',
+    image: '/images/imag28.jpeg',
     badge: 'BESTSELLER',
     rating: 4.7,
     reviews: 189,
@@ -60,7 +60,7 @@ export const products: Product[] = [
     name: 'Cold Pressed Sesame Oil',
     category: 'oil',
     description: 'Traditional chekku-pressed sesame oil. Nutty flavor, rich in antioxidants, perfect for South Indian cooking.',
-    image: '/images/img5.jpeg',
+    image: '/images/img12.jpeg',
     rating: 4.6,
     reviews: 142,
     variants: [
@@ -71,11 +71,11 @@ export const products: Product[] = [
   },
 
   {
-    slug: 'cold-pressed-mustard-oil',
-    name: 'Sesame Oil',
+    slug: 'cold-neem-oil',
+    name: 'Neem Oil',
     category: 'oil',
     description: 'Kachi ghani mustard oil — pungent, pure, and perfect for pickles, curries, and traditional recipes.',
-    image: '/images/img12.jpeg',
+    image: '/images/imag17.jpeg',
     rating: 4.5,
     reviews: 98,
     variants: [
@@ -90,7 +90,7 @@ export const products: Product[] = [
     name: 'Cold Pressed Sunflower Oil',
     category: 'oil',
     description: 'Light, healthy sunflower oil cold-pressed to retain natural vitamins. Great for daily cooking.',
-    image: '/images/img11.jpeg',
+    image: '/images/imag28.jpeg',
     rating: 4.4,
     reviews: 76,
     variants: [
@@ -100,11 +100,11 @@ export const products: Product[] = [
   },
 
   {
-    slug: 'cold-pressed-almond-oil',
-    name: 'Cold Pressed Almond Oil',
+    slug: 'pooja-oil',
+    name: 'Pooja Oil',
     category: 'oil',
     description: 'Pure sweet almond oil — perfect for skin, hair, and baby massage. Cold-pressed and unrefined.',
-    image: 'https://images.unsplash.com/photo-1508061253366-f7da158b6d46?w=800&q=80',
+    image: '/images/imag19.jpeg',
     badge: 'PREMIUM',
     rating: 4.9,
     reviews: 156,
@@ -117,10 +117,10 @@ export const products: Product[] = [
 
   {
     slug: 'cold-pressed-castor-oil',
-    name: 'Cold Pressed Castor Oil',
+    name: 'Almond Seed Oil',
     category: 'oil',
     description: 'Pure castor oil for hair growth, skin care, and traditional wellness. Hexane-free, cold-pressed.',
-    image: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&q=80',
+    image: '/images/imag21.jpeg',
     rating: 4.6,
     reviews: 118,
     variants: [
@@ -132,10 +132,10 @@ export const products: Product[] = [
 
   {
     slug: 'cold-pressed-black-seed-oil',
-    name: 'Cold Pressed Black Seed Oil',
+    name: 'Flaxseed Oil',
     category: 'oil',
     description: 'Kalonji (black seed) oil — cold-pressed, rich in thymoquinone. For immunity and wellness.',
-    image: '/images/img3.jpeg',
+    image: '/images/imag22.jpeg',
     badge: 'NEW',
     rating: 4.8,
     reviews: 87,
@@ -147,10 +147,10 @@ export const products: Product[] = [
 
   {
     slug: 'cold-pressed-olive-oil',
-    name: 'Cold Pressed Olive Oil',
+    name: 'Castor Oil',
     category: 'oil',
     description: 'Extra virgin olive oil, cold-pressed from premium olives. Perfect for salads, dips, and cooking.',
-    image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800&q=80',
+    image: '/images/imag23.jpeg',
     badge: 'PREMIUM',
     rating: 4.7,
     reviews: 132,
@@ -166,7 +166,7 @@ export const products: Product[] = [
     name: 'A2 Cow Ghee (Bilona)',
     category: 'ghee',
     description: 'Traditional bilona-method A2 cow ghee — grainy, aromatic, and rich in nutrients.',
-    image: '/images/img2.jpeg',
+    image: '/images/imag25.jpeg',
     badge: 'BESTSELLER',
     rating: 4.9,
     reviews: 245,
@@ -182,7 +182,7 @@ export const products: Product[] = [
     name: 'Organic Wild Forest Honey',
     category: 'honey',
     description: 'Raw, unfiltered wild forest honey — single-origin, straight from the hive. No sugar, no additives.',
-    image: '/images/img8.jpeg',
+    image: '/images/imag29.jpeg',
     badge: 'BESTSELLER',
     rating: 4.8,
     reviews: 189,
@@ -194,11 +194,11 @@ export const products: Product[] = [
   },
 
   {
-    slug: 'organic-multiflora-honey',
-    name: 'Organic Multiflora Honey',
+    slug: 'Oil',
+    name: 'Niger Oil',
     category: 'honey',
     description: 'Everyday multiflora honey — mild, smooth, and pure. Great for tea, toast, and cooking.',
-    image: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800&q=80',
+    image: '/images/imag24.jpeg',
     rating: 4.6,
     reviews: 121,
     variants: [
