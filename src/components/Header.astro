@@ -52,7 +52,7 @@ const links = [
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
 
       <a href="/" class="flex items-center gap-2 shrink-0">
-        <img src="/images/logo1.jpeg" alt="Raingrain Logo" class="h-9 w-auto object-contain" />
+        <img src="/images/logo.jpeg" alt="Raingrain Logo" class="h-9 w-auto object-contain" />
       </a>
 
       <ul class="hidden md:flex items-center gap-4 lg:gap-6 h-full">
@@ -133,7 +133,66 @@ const links = [
           </div>
           <span id="cart-total-label" class="text-[11px] lg:text-xs font-semibold hidden sm:block">₹0.00</span>
         </a>
+
+        <!-- ================= BURGER MENU (mobile only) ================= -->
+        <button
+          id="mobile-menu-toggle"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          class="md:hidden relative hover:text-gray-300 transition flex items-center justify-center"
+        >
+          <!-- Burger icon -->
+          <svg id="burger-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <!-- Close icon (hidden by default) -->
+          <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
+    </div>
+
+    <!-- ================= MOBILE MENU PANEL ================= -->
+    <div
+      id="mobile-menu"
+      class="md:hidden hidden bg-[#2d5a3f] border-t border-[#1f3f2b] overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out max-h-0 opacity-0"
+    >
+      <ul class="px-4 py-3 space-y-1">
+        {links.map(l => (
+          <li>
+            <a
+              href={l.href}
+              class:list={[
+                'block py-2.5 px-2 text-xs font-semibold tracking-wide rounded transition hover:bg-[#1f3f2b] hover:text-gray-300 flex items-center justify-between',
+                path === l.href && 'text-gray-300 bg-[#1f3f2b]/50'
+              ]}
+            >
+              <span>{l.label}</span>
+              {l.hasDropdown && (
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              )}
+            </a>
+          </li>
+        ))}
+
+        <!-- Login / Register (shown in mobile menu since it's hidden on small screens) -->
+        <li class="pt-2 mt-2 border-t border-[#1f3f2b]">
+          <a
+            href="/login"
+            class="block py-2.5 px-2 text-xs font-semibold tracking-wide rounded transition hover:bg-[#1f3f2b] hover:text-gray-300"
+          >
+            LOGIN / REGISTER
+          </a>
+        </li>
+      </ul>
     </div>
   </nav>
 </header>
@@ -196,6 +255,57 @@ const links = [
 
     goTo(0);
     start();
+  })();
+</script>
+
+<!-- MOBILE MENU TOGGLE -->
+<script>
+  (function () {
+    const toggle = document.getElementById('mobile-menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const burger = document.getElementById('burger-icon');
+    const close = document.getElementById('close-icon');
+
+    if (!toggle || !menu) return;
+
+    let open = false;
+
+    function setOpen(next: boolean) {
+      open = next;
+      toggle!.setAttribute('aria-expanded', String(open));
+      toggle!.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      burger?.classList.toggle('hidden', open);
+      close?.classList.toggle('hidden', !open);
+
+      if (open) {
+        menu!.classList.remove('hidden');
+        // Force reflow so transition plays
+        void menu!.offsetHeight;
+        menu!.style.maxHeight = menu!.scrollHeight + 'px';
+        menu!.style.opacity = '1';
+        menu!.classList.remove('max-h-0', 'opacity-0');
+      } else {
+        menu!.style.maxHeight = '0px';
+        menu!.style.opacity = '0';
+        menu!.classList.add('max-h-0', 'opacity-0');
+        // Hide after transition
+        window.setTimeout(() => {
+          if (!open) menu!.classList.add('hidden');
+        }, 300);
+      }
+    }
+
+    toggle.addEventListener('click', () => setOpen(!open));
+
+    // Close menu when clicking any link inside it
+    menu.querySelectorAll('a').forEach((a) => {
+      a.addEventListener('click', () => setOpen(false));
+    });
+
+    // Close menu on resize to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768 && open) setOpen(false);
+    });
   })();
 </script>
 
